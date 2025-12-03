@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación - OSINT Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <i data-feather="layers"></i> OSINT Deck
+                </a>
+                <div class="nav-links">
+                    <a href="index.html">Inicio</a>
+                    <a href="docs.html" class="active">Documentación</a>
+                    <a href="https://github.com/tu-usuario/osint-deck" target="_blank">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="docs-layout">
+            <aside class="sidebar">
+                <nav>
+                    <ul>
+                        <li><a href="#intro" class="active">Introducción</a></li>
+                        <li><a href="#features">Características</a></li>
+                        <li><a href="#shortcode">Shortcode</a></li>
+                        <li><a href="#installation">Instalación</a></li>
+                        <li><a href="#validation">Validación de Dominios</a></li>
+                        <li><a href="#rate-limiting">Rate Limiting</a></li>
+                        <li><a href="#admin">Administración</a></li>
+                        <li><a href="#hooks">Hooks y Cron</a></li>
+                        <li><a href="#ajax">AJAX</a></li>
+                        <li><a href="#roadmap">Roadmap</a></li>
+                        <li><a href="#authors">Autores</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="docs-content">
+                <section id="intro">
+                    <h1>OSINT Deck</h1>
+                    <p>OSINT Deck es un plugin de WordPress diseñado para centralizar y organizar herramientas OSINT en
+                        un mazo dinámico. El sistema detecta automáticamente el tipo de dato ingresado y activa las
+                        herramientas correspondientes, permitiendo análisis rápidos, ordenados y reproducibles en un
+                        entorno unificado.</p>
+                </section>
+
+                <section id="features">
+                    <h2>Características Principales</h2>
+
+                    <h3>Detección automática del tipo de dato</h3>
+                    <p>El plugin identifica automáticamente el contenido ingresado, soportando:</p>
+                    <ul>
+                        <li>Email, Dominio / subdominio, URL, IP v4 / v6</li>
+                        <li>ASN, MAC, UUID, Hashes (MD5, SHA1, SHA256)</li>
+                        <li>Teléfonos, Coordenadas, Wallets BTC / ETH</li>
+                        <li>Claves PGP, Archivos conocidos, Username / alias</li>
+                        <li>Nombre completo, ZIP / Código postal, Paquetes com.*.*</li>
+                    </ul>
+
+                    <h3>Mazo dinámico de herramientas</h3>
+                    <ul>
+                        <li>Cartas individuales por herramienta</li>
+                        <li>Botón principal “Analizar {input}”</li>
+                        <li>Acciones extra: copiar, abrir, compartir</li>
+                        <li>Filtros por categoría, licencia y tipo de acceso</li>
+                        <li>Badges automáticos: Nueva, Popular, Reportada, Recomendada</li>
+                    </ul>
+
+                    <h3>Métricas internas</h3>
+                    <p>Las métricas se generan diariamente y se almacenan en <code>osd_tool_metrics</code>. Incluyen
+                        <code>clicks_7d</code>, <code>reports_7d</code>, <code>created_at</code>,
+                        <code>last_input_type</code>.</p>
+                </section>
+
+                <section id="shortcode">
+                    <h2>Shortcode</h2>
+                    <pre><code>[osint_deck]
+[osint_deck category="dominios" access="gratuito" limit="20"]</code></pre>
+                    <p><strong>Parámetros:</strong></p>
+                    <ul>
+                        <li><code>category</code>: filtra por categoría de herramienta</li>
+                        <li><code>access</code>: tipo de acceso (por ejemplo, gratuito, registro, pago)</li>
+                        <li><code>limit</code>: cantidad inicial de resultados (por defecto 20)</li>
+                    </ul>
+                </section>
+
+                <section id="installation">
+                    <h2>Instalación</h2>
+                    <h3>Instalación manual</h3>
+                    <ol>
+                        <li>Descargar el repositorio.</li>
+                        <li>Copiar la carpeta del plugin dentro de: <code>wp-content/plugins/osint-deck</code></li>
+                        <li>En el panel de WordPress ir a: <strong>Plugins → OSINT Deck → Activar</strong>.</li>
+                    </ol>
+                    <p>(Opcional) Importar herramientas usando los JSON de <code>template-de-herramientas/*.json</code>.
+                    </p>
+
+                    <h3>WP-CLI</h3>
+                    <pre><code>wp plugin activate osint-deck</code></pre>
+                </section>
+
+                <section id="validation">
+                    <h2>Validación de dominios y TLDs</h2>
+                    <ul>
+                        <li>Lista IANA local en <code>assets/data/tlds-alpha-by-domain.txt</code>.</li>
+                        <li>Tarea semanal: <code>osd_refresh_tlds_weekly</code>.</li>
+                        <li>Validación offline mediante <code>osd_is_valid_domain()</code> (sin llamadas externas).</li>
+                    </ul>
+                </section>
+
+                <section id="rate-limiting">
+                    <h2>Rate limiting</h2>
+                    <p>Implementado en <code>osd_user_event</code>:</p>
+                    <ul>
+                        <li>60 acciones por minuto por IP</li>
+                        <li>1 reporte por herramienta por día</li>
+                        <li>Respuestas JSON consistentes (códigos como <code>rate_limited</code>,
+                            <code>report_limit</code>)</li>
+                    </ul>
+                </section>
+
+                <section id="admin">
+                    <h2>Administración</h2>
+                    <p>Funcionalidades del panel de administración:</p>
+                    <ul>
+                        <li>Configuración de límites y opciones de seguridad</li>
+                        <li>CRUD de herramientas</li>
+                        <li>Importación y exportación en JSON</li>
+                        <li>Logs de usuario y logs administrativos</li>
+                        <li>Métricas resumidas por herramienta</li>
+                    </ul>
+                </section>
+
+                <section id="hooks">
+                    <h2>Hooks y tareas programadas</h2>
+                    <h3>Cron jobs principales</h3>
+                    <ul>
+                        <li><code>osd_metrics_daily</code></li>
+                        <li><code>osd_refresh_tlds_weekly</code></li>
+                    </ul>
+                </section>
+
+                <section id="ajax">
+                    <h2>AJAX</h2>
+                    <h3>Públicos</h3>
+                    <ul>
+                        <li><code>osd_user_event</code></li>
+                        <li><code>osd_check_tld</code></li>
+                    </ul>
+                    <h3>Administrativos</h3>
+                    <ul>
+                        <li><code>osd_metrics_summary</code></li>
+                        <li><code>osd_tools_*</code></li>
+                        <li><code>osd_logs_*</code></li>
+                    </ul>
+                </section>
+
+                <section id="roadmap">
+                    <h2>Roadmap inicial</h2>
+                    <ul>
+                        <li>[ ] Soporte para nuevos tipos de input avanzados</li>
+                        <li>[ ] Exportación de mazos personalizados</li>
+                        <li>[ ] Dashboard ampliado con comparativas de métricas</li>
+                        <li>[ ] Integración con fuentes externas OSINT</li>
+                        <li>[ ] Publicación en WordPress Plugin Directory</li>
+                    </ul>
+                </section>
+
+                <section id="authors">
+                    <h2>Autores</h2>
+                    <p>Equipo de desarrollo:</p>
+                    <ul>
+                        <li>Sebastián Cendra</li>
+                        <li>Claudio Pandelo</li>
+                        <li>Paolo Peña Ramírez</li>
+                        <li>Guillermo Quintana</li>
+                        <li>Damián Radiminsky</li>
+                    </ul>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 OSINT Deck. Licencia MIT.</p>
+                <div class="footer-links">
+                    <a href="https://github.com/tu-usuario/osint-deck">GitHub</a>
+                    <a href="#">Arriba</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
