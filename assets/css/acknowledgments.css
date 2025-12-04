@@ -1,0 +1,139 @@
+/* ========================================
+   ACKNOWLEDGMENTS SECTION - Clean Minimal Design
+   ======================================== */
+
+.ack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.ack-grid-professors {
+    margin-top: 12px;
+}
+
+/* Card Container */
+.acknowledgment-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    transition: all 0.2s ease;
+}
+
+.acknowledgment-card:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+/* Avatar */
+.acknowledgment-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    flex-shrink: 0;
+}
+
+/* Authority specific styling if needed, though JS doesn't seem to add a specific class for it on the card itself, only passes isAuthority to createCard but doesn't add class to card. 
+   Wait, the JS doesn't add a class for authority card variant. 
+   It just changes avatar size in the src URL.
+   Let's check if we need specific CSS for authority avatars.
+   The JS sets size in URL but the CSS sets width/height.
+   If I want larger avatars for authorities, I need a way to target them.
+   The JS DOES NOT add a class to the card for authorities.
+   However, the HTML has separate containers: #authorities-grid and #professors-grid.
+   So I can target .authorities-grid .acknowledgment-card .acknowledgment-avatar
+*/
+
+#authorities-grid .acknowledgment-avatar {
+    width: 56px;
+    height: 56px;
+}
+
+#authorities-grid .acknowledgment-card {
+    padding: 12px 14px;
+}
+
+/* Content/Meta Container */
+.acknowledgment-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+    /* Prevents flex item from overflowing */
+}
+
+/* Header (Name + LinkedIn) */
+.acknowledgment-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.acknowledgment-name {
+    color: #e5e7eb;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0;
+    /* Reset h4 margin */
+    line-height: 1.2;
+}
+
+.acknowledgment-role {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin: 0;
+    /* Reset p margin */
+    line-height: 1.3;
+}
+
+/* LinkedIn Icon */
+.linkedin-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    border-radius: 999px;
+    color: #60a5fa;
+    background: rgba(37, 99, 235, 0.08);
+    transition: background 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.linkedin-icon:hover {
+    color: #bfdbfe;
+    background: rgba(37, 99, 235, 0.18);
+}
+
+.linkedin-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ack-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .acknowledgment-card {
+        padding: 8px 10px;
+    }
+
+    .acknowledgment-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    #authorities-grid .acknowledgment-avatar {
+        width: 48px;
+        height: 48px;
+    }
+}

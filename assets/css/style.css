@@ -3,6 +3,7 @@
     --text-color: #e2e8f0;
     --primary-color: #3b82f6;
     --secondary-color: #1e293b;
+    --bg-secondary: #1e293b;
     --accent-color: #10b981;
     --border-color: #334155;
     --font-main: 'Inter', sans-serif;
@@ -106,15 +107,73 @@ nav {
     gap: 30px;
 }
 
-.nav-links a:hover {
+.nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
     color: var(--primary-color);
 }
 
-/* Hero Section */
+/* hero-parallax-upgrade: Universal Parallax System */
+.parallax-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.parallax-bg {
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+    bottom: -50px;
+    z-index: 0;
+    will-change: transform;
+}
+
+.parallax-content {
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+}
+
+/* Hero Section with Enhanced Parallax */
 .hero {
     padding: 160px 0 100px;
     text-align: center;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero .parallax-bg {
     background: radial-gradient(circle at top center, #1e293b 0%, #0f172a 70%);
+}
+
+.hero .parallax-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.2) 0%, transparent 60%);
+    opacity: 1;
+}
+
+.hero .parallax-bg::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    right: 10%;
+    bottom: 0;
+    background: radial-gradient(ellipse at 30% 30%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+    opacity: 0.8;
 }
 
 .hero h1 {
@@ -138,9 +197,18 @@ nav {
     justify-content: center;
 }
 
-/* Features Grid */
+/* Quick Links Section Parallax */
+.quick-links .parallax-bg {
+    background: radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+}
+
+/* Features Section Parallax */
 .features {
     padding: 100px 0;
+}
+
+.features .parallax-bg {
+    background: radial-gradient(ellipse at top left, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
 }
 
 .section-title {
@@ -201,53 +269,243 @@ nav {
     min-height: 100vh;
 }
 
+/* Sidebar: contenedor sticky completo */
 .sidebar {
-    width: 250px;
+    width: 280px;
     position: sticky;
     top: 100px;
-    height: calc(100vh - 100px);
-    overflow-y: auto;
+    /* desde dónde se pega al top */
+    max-height: calc(100vh - 70px);
+    /* alto máximo disponible */
+    display: flex;
+    flex-direction: column;
     border-right: 1px solid var(--border-color);
     padding-right: 20px;
 }
 
-.sidebar ul li {
+/* Header dentro de la sidebar (no hace falta sticky acá) */
+.sidebar-header {
     margin-bottom: 10px;
+    background: var(--bg-color);
+    z-index: 1;
+}
+
+/* Menú que ocupa todo el resto y scrollea */
+.sidebar nav {
+    flex: 1;
+    /* ocupa todo el espacio restante */
+    overflow-y: auto;
+    /* scroll interno */
+}
+
+/* Opcional: un pequeño margen entre buscador y lista */
+#sidebar-nav {
+    margin-top: 0px;
+    padding-top: 0;
+}
+
+
+
+.sidebar-header h4 {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-search {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+    position: relative;
+    z-index: 20;
+}
+
+.sidebar-search:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.sidebar ul li {
+    margin-bottom: 8px;
 }
 
 .sidebar a {
     color: #94a3b8;
     display: block;
-    padding: 5px 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 15;
 }
 
-.sidebar a:hover, .sidebar a.active {
+.sidebar a:hover {
     color: var(--primary-color);
-    padding-left: 5px;
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.sidebar a.active {
+    color: var(--primary-color);
+    background-color: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid var(--primary-color);
+    padding-left: 9px;
 }
 
 .docs-content {
     flex: 1;
+    max-width: 800px;
     padding-bottom: 100px;
 }
 
-.docs-content h1, .docs-content h2, .docs-content h3 {
+.docs-content a {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.docs-content a:hover {
+    color: #60a5fa;
+}
+
+/* docs-parallax-upgrade: Documentation Hero with Parallax */
+.docs-hero {
+    position: relative;
+    margin-bottom: 40px;
+    overflow: hidden;
+    min-height: 220px;
+}
+
+.docs-hero-bg-layer {
+    position: absolute;
+    top: -40px;
+    left: -30px;
+    right: -30px;
+    bottom: -40px;
+    background: radial-gradient(ellipse at top left, rgba(59, 130, 246, 0.12) 0%, transparent 70%);
+    z-index: 0;
+    will-change: transform;
+}
+
+.docs-hero-bg-layer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(ellipse at top right, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
+}
+
+.docs-hero-content {
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+}
+
+/* docs-ux-upgrade: Documentation Header */
+.docs-header {
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.docs-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.docs-subtitle {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    margin-bottom: 15px;
+}
+
+.docs-meta {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.version-badge {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.github-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.github-link:hover {
+    color: var(--primary-color);
+}
+
+.docs-content h1,
+.docs-content h2,
+.docs-content h3 {
     margin-top: 40px;
     margin-bottom: 20px;
     color: white;
 }
 
-.docs-content p, .docs-content li {
+.docs-content h2 {
+    font-size: 2rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.docs-content h3 {
+    font-size: 1.5rem;
+}
+
+.docs-content p,
+.docs-content li {
     color: #cbd5e1;
     margin-bottom: 15px;
+    line-height: 1.8;
+}
+
+.docs-content ul {
+    list-style: disc;
+    margin-left: 25px;
+}
+
+.docs-content ol {
+    list-style: decimal;
+    margin-left: 25px;
 }
 
 .docs-content code {
     background-color: #1e293b;
-    padding: 2px 6px;
+    padding: 3px 8px;
     border-radius: 4px;
     font-family: 'Fira Code', monospace;
     color: #f472b6;
+    font-size: 0.9em;
+}
+
+/* docs-ux-upgrade: Code Block Wrapper */
+.code-block-wrapper {
+    position: relative;
+    margin: 20px 0;
+}
+
+.code-block-wrapper pre {
+    margin: 0;
 }
 
 .docs-content pre {
@@ -256,12 +514,128 @@ nav {
     border-radius: 8px;
     overflow-x: auto;
     margin-bottom: 20px;
+    border: 1px solid var(--border-color);
 }
 
 .docs-content pre code {
     background-color: transparent;
     padding: 0;
     color: inherit;
+}
+
+/* docs-ux-upgrade: Copy Button */
+.copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(59, 130, 246, 0.2);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+    opacity: 1;
+    background-color: rgba(59, 130, 246, 0.3);
+}
+
+.copy-btn.copied {
+    background-color: rgba(16, 185, 129, 0.2);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+/* docs-ux-upgrade: Callouts */
+.callout {
+    display: flex;
+    gap: 15px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border-left: 4px solid;
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: var(--primary-color);
+}
+
+.callout i {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.callout.info {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: var(--primary-color);
+    color: #93c5fd;
+}
+
+.callout.info i {
+    color: var(--primary-color);
+}
+
+.callout.warning {
+    background-color: rgba(251, 191, 36, 0.1);
+    border-color: #fbbf24;
+    color: #fde68a;
+}
+
+.callout.warning i {
+    color: #fbbf24;
+}
+
+.callout.tip {
+    background-color: rgba(16, 185, 129, 0.1);
+    border-color: var(--accent-color);
+    color: #6ee7b7;
+}
+
+.callout.tip i {
+    color: var(--accent-color);
+}
+
+/* docs-ux-upgrade: Reveal Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* docs-ux-upgrade: Back to Top Button */
+#back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--primary-color);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+#back-to-top:hover {
+    background-color: #2563eb;
+    transform: translateY(-3px);
+}
+
+#back-to-top.visible {
+    display: flex;
 }
 
 /* Footer */
@@ -278,9 +652,44 @@ footer {
     align-items: center;
 }
 
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
 .footer-links a {
-    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     color: #94a3b8;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+}
+
+/* docs-ux-upgrade: Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: opacity 0.2s ease;
+    }
+
+    .btn,
+    .card,
+    .copy-btn,
+    #back-to-top {
+        transition: opacity 0.2s ease;
+    }
+
+    /* hero-parallax-upgrade: Disable parallax for reduced motion */
+    .parallax-bg,
+    .parallax-content,
+    .docs-hero-bg-layer,
+    .docs-hero-content {
+        transform: none !important;
+    }
 }
 
 /* Responsive */
@@ -288,15 +697,15 @@ footer {
     .hero h1 {
         font-size: 2.5rem;
     }
-    
+
     .nav-links {
         display: none;
     }
-    
+
     .docs-layout {
         flex-direction: column;
     }
-    
+
     .sidebar {
         width: 100%;
         height: auto;
@@ -306,4 +715,135 @@ footer {
         border-bottom: 1px solid var(--border-color);
         padding-bottom: 20px;
     }
+
+    .docs-content {
+        max-width: 100%;
+    }
+
+    #back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+    }
+
+    /* hero-parallax-upgrade: Disable parallax on mobile */
+    .parallax-bg,
+    .parallax-content,
+    .docs-hero-bg-layer,
+    .docs-hero-content {
+        transform: none !important;
+    }
+}
+
+/* Acknowledgments Section - List Style */
+.acknowledgment-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.acknowledgment-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    margin-bottom: 8px;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.acknowledgment-item:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+.acknowledgment-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 2px solid var(--primary-color);
+}
+
+.acknowledgment-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.acknowledgment-name {
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a.acknowledgment-name:hover {
+    color: var(--primary-color);
+}
+
+.acknowledgment-role {
+    color: #94a3b8;
+    font-size: 0.875rem;
+}
+
+.professors-list .acknowledgment-item {
+    padding: 10px;
+}
+
+.professors-list .acknowledgment-avatar {
+    width: 28px;
+    height: 28px;
+}
+
+.professors-list .acknowledgment-name {
+    font-size: 0.95rem;
+}
+
+.professors-list .acknowledgment-role {
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .acknowledgment-item {
+        padding: 10px;
+    }
+
+    .acknowledgment-avatar {
+        width: 28px;
+        height: 28px;
+    }
+
+    .acknowledgment-name {
+        font-size: 0.9rem;
+    }
+}
+
+.acknowledgment-name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.linkedin-icon {
+    display: inline-flex;
+    align-items: center;
+    color: #0a66c2;
+    transition: opacity 0.2s ease;
+}
+
+.linkedin-icon:hover {
+    opacity: 0.7;
+}
+
+.linkedin-icon svg {
+    width: 16px;
+    height: 16px;
 }

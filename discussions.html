@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discusiones - OSINT Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .discussions-container {
+            max-width: 1200px;
+            margin: 100px auto 40px;
+            padding: 0 20px;
+        }
+
+        .discussions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .discussions-header h1 {
+            font-size: 2rem;
+            color: white;
+            margin: 0;
+        }
+
+        .new-discussion-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .new-discussion-btn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .discussions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .discussion-item {
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .discussion-item:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .discussion-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .discussion-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            flex-wrap: wrap;
+        }
+
+        .discussion-meta i {
+            width: 16px;
+            height: 16px;
+        }
+
+        .discussion-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            background-color: rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+        }
+
+        .discussion-answered {
+            color: var(--accent-color);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-message {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            border-radius: 8px;
+            padding: 20px;
+            color: #fca5a5;
+            text-align: center;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .pagination button {
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <img src="assets/img/logo.png" alt="OSINT Deck" height="40">
+                </a>
+                <div class="nav-links">
+                    <a href="index.html"><i data-feather="home"></i> Inicio</a>
+                    <a href="docs.html"><i data-feather="book-open"></i> Documentación</a>
+                    <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
+                    <a href="discussions.html" class="active"><i data-feather="message-circle"></i> Discusiones</a>
+                    <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck" target="_blank"><i data-feather="github"></i>
+                        GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="discussions-container">
+        <div class="discussions-header">
+            <h1>💬 Discusiones de la Comunidad</h1>
+            <a href="https://github.com/OsintDeck/OsintDeck/discussions/new/choose" target="_blank"
+                class="new-discussion-btn">
+                <i data-feather="plus"></i>
+                Nueva Discusión
+            </a>
+        </div>
+
+        <div class="search-filter">
+            <input type="text" id="searchInput" class="search-input" placeholder="Buscar discusiones...">
+            <select id="categoryFilter" class="filter-select">
+                <option value="">Todas las categorías</option>
+                <option value="Q&A">Q&A</option>
+                <option value="Ideas">Ideas</option>
+                <option value="General">General</option>
+            </select>
+            <select id="statusFilter" class="filter-select">
+                <option value="">Todos los estados</option>
+                <option value="answered">Respondidas</option>
+                <option value="unanswered">Sin responder</option>
+            </select>
+        </div>
+
+        <div id="discussionsList" class="discussions-list">
+            <div class="loading">
+                <i data-feather="loader"></i>
+                <p>Cargando discusiones...</p>
+            </div>
+        </div>
+
+        <div id="pagination" class="pagination" style="display: none;">
+            <button id="prevPage"><i data-feather="chevron-left"></i> Anterior</button>
+            <button id="nextPage">Siguiente <i data-feather="chevron-right"></i></button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 OSINT Deck. Licencia MIT.</p>
+                <div class="footer-links">
+                    <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
+                    <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
+                    <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck"><i data-feather="github"></i> GitHub</a>
+                    <a href="docs.html"><i data-feather="book-open"></i> Docs</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/discussions.js"></script>
+</body>
+
+</html>

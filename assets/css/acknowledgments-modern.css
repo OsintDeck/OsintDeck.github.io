@@ -1,0 +1,237 @@
+/* ========================================
+   ACKNOWLEDGMENTS SECTION - Modern Card Design
+   ======================================== */
+
+#acknowledgments {
+    padding: 60px 0;
+}
+
+#acknowledgments h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.acknowledgments-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 50px;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.acknowledgments-section {
+    margin-bottom: 60px;
+}
+
+.acknowledgments-section h3 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: white;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.acknowledgments-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), transparent);
+}
+
+/* Grid Layout */
+.acknowledgment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 30px;
+}
+
+/* Authorities - Larger Cards */
+.authorities-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+/* Card Styling */
+.acknowledgment-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.acknowledgment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.acknowledgment-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(59, 130, 246, 0.1);
+}
+
+.acknowledgment-card:hover::before {
+    opacity: 1;
+}
+
+/* Avatar Styling */
+.acknowledgment-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    background: linear-gradient(var(--bg-color), var(--bg-color)) padding-box, linear-gradient(135deg, #3b82f6, #8b5cf6) border-box;
+    padding: 3px;
+    transition: transform 0.3s ease;
+}
+
+.authorities-grid .acknowledgment-avatar {
+    width: 100px;
+    height: 100px;
+}
+
+.acknowledgment-card:hover .acknowledgment-avatar {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Name and Role */
+.acknowledgment-name {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+
+.authorities-grid .acknowledgment-name {
+    font-size: 1.3rem;
+}
+
+.acknowledgment-role {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin: -8px 0 0 0;
+    font-style: italic;
+}
+
+.authorities-grid .acknowledgment-role {
+    font-size: 1rem;
+    color: #3b82f6;
+    font-weight: 500;
+}
+
+/* LinkedIn Icon */
+.linkedin-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #0a66c2, #004182);
+    border-radius: 50%;
+    color: white;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+}
+
+.linkedin-icon:hover {
+    transform: scale(1.15);
+    box-shadow: 0 8px 16px rgba(10, 102, 194, 0.3);
+}
+
+.linkedin-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Community Section */
+.community-acknowledgment {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.community-acknowledgment h3 {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.community-acknowledgment p {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.community-acknowledgment a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.community-acknowledgment a:hover {
+    color: #60a5fa;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    .acknowledgment-grid,
+    .authorities-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    #acknowledgments h2 {
+        font-size: 2rem;
+    }
+
+    .acknowledgments-section h3 {
+        font-size: 1.5rem;
+    }
+
+    .acknowledgment-card {
+        padding: 20px;
+    }
+
+    .acknowledgment-avatar {
+        width: 60px;
+        height: 60px;
+    }
+
+    .authorities-grid .acknowledgment-avatar {
+        width: 80px;
+        height: 80px;
+    }
+}

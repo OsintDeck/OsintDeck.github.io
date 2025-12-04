@@ -10,6 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/acknowledgments.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
 
@@ -18,12 +22,16 @@
         <div class="container">
             <nav>
                 <a href="index.html" class="logo">
-                    <i data-feather="layers"></i> OSINT Deck
+                    <img src="assets/img/logo.png" alt="OSINT Deck" height="40">
                 </a>
                 <div class="nav-links">
-                    <a href="index.html">Inicio</a>
-                    <a href="docs.html" class="active">Documentación</a>
-                    <a href="https://github.com/tu-usuario/osint-deck" target="_blank">GitHub</a>
+                    <a href="index.html"><i data-feather="home"></i> Inicio</a>
+                    <a href="docs.html" class="active"><i data-feather="book-open"></i> Documentación</a>
+                    <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
+                    <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
+                    <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck" target="_blank"><i data-feather="github"></i>
+                        GitHub</a>
                 </div>
             </nav>
         </div>
@@ -32,9 +40,14 @@
     <div class="container">
         <div class="docs-layout">
             <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h4>Navegación</h4>
+                    <input type="text" id="sidebar-search" placeholder="Buscar sección..." class="sidebar-search">
+                </div>
                 <nav>
-                    <ul>
+                    <ul id="sidebar-nav">
                         <li><a href="#intro" class="active">Introducción</a></li>
+                        <li><a href="#about">Sobre el Proyecto</a></li>
                         <li><a href="#features">Características</a></li>
                         <li><a href="#shortcode">Shortcode</a></li>
                         <li><a href="#installation">Instalación</a></li>
@@ -44,21 +57,64 @@
                         <li><a href="#hooks">Hooks y Cron</a></li>
                         <li><a href="#ajax">AJAX</a></li>
                         <li><a href="#roadmap">Roadmap</a></li>
+                        <li><a href="#acknowledgments">Agradecimientos</a></li>
                         <li><a href="#authors">Autores</a></li>
                     </ul>
                 </nav>
             </aside>
 
             <main class="docs-content">
-                <section id="intro">
-                    <h1>OSINT Deck</h1>
+                <div class="docs-hero">
+                    <div class="docs-hero-bg-layer"></div>
+                    <div class="docs-hero-content">
+                        <div class="docs-header">
+                            <h1>Documentación de OSINT Deck</h1>
+                            <p class="docs-subtitle">Guía completa para implementar y configurar el plugin</p>
+                            <div class="docs-meta">
+                                <span class="version-badge">v1.0</span>
+                                <a href="https://github.com/OsintDeck/OsintDeck" target="_blank" class="github-link">
+                                    <i data-feather="github"></i> Ver en GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <section id="intro" class="reveal">
+                    <h2>Introducción</h2>
                     <p>OSINT Deck es un plugin de WordPress diseñado para centralizar y organizar herramientas OSINT en
                         un mazo dinámico. El sistema detecta automáticamente el tipo de dato ingresado y activa las
                         herramientas correspondientes, permitiendo análisis rápidos, ordenados y reproducibles en un
                         entorno unificado.</p>
+
+                    <div class="callout info">
+                        <i data-feather="info"></i>
+                        <div>
+                            <strong>Nota:</strong> Esta documentación describe el estado actual del plugin (versión 1.0)
+                            en la rama principal del repositorio. Cuando se publiquen nuevas versiones estables, esta
+                            página se actualizará con los cambios correspondientes.
+                        </div>
+                    </div>
                 </section>
 
-                <section id="features">
+                <section id="about" class="reveal">
+                    <h2>Sobre el Proyecto</h2>
+                    <p>OSINT Deck nace como una iniciativa del equipo de <a href="https://osint.com.ar" target="_blank"
+                            rel="noopener noreferrer">OSINT.com.ar</a>, un blog especializado en inteligencia de fuentes
+                        abiertas y ciberseguridad. La herramienta fue desarrollada para optimizar los flujos de trabajo
+                        de investigación que utilizamos diariamente en nuestras publicaciones y análisis.</p>
+
+                    <div class="callout tip">
+                        <i data-feather="globe"></i>
+                        <div>
+                            <strong>Mantente actualizado:</strong> Visita <a href="https://osint.com.ar" target="_blank"
+                                rel="noopener noreferrer">osint.com.ar</a> para leer artículos sobre técnicas OSINT,
+                            herramientas, casos de estudio y las últimas novedades en ciberseguridad.
+                        </div>
+                    </div>
+                </section>
+
+                <section id="features" class="reveal">
                     <h2>Características Principales</h2>
 
                     <h3>Detección automática del tipo de dato</h3>
@@ -74,7 +130,7 @@
                     <h3>Mazo dinámico de herramientas</h3>
                     <ul>
                         <li>Cartas individuales por herramienta</li>
-                        <li>Botón principal “Analizar {input}”</li>
+                        <li>Botón principal "Analizar {input}"</li>
                         <li>Acciones extra: copiar, abrir, compartir</li>
                         <li>Filtros por categoría, licencia y tipo de acceso</li>
                         <li>Badges automáticos: Nueva, Popular, Reportada, Recomendada</li>
@@ -83,83 +139,111 @@
                     <h3>Métricas internas</h3>
                     <p>Las métricas se generan diariamente y se almacenan en <code>osd_tool_metrics</code>. Incluyen
                         <code>clicks_7d</code>, <code>reports_7d</code>, <code>created_at</code>,
-                        <code>last_input_type</code>.</p>
+                        <code>last_input_type</code>.
+                    </p>
                 </section>
 
-                <section id="shortcode">
+                <section id="shortcode" class="reveal">
                     <h2>Shortcode</h2>
-                    <pre><code>[osint_deck]
+                    <p>Implementa el mazo en cualquier página o entrada:</p>
+                    <div class="code-block-wrapper">
+                        <pre class="line-numbers"><code class="language-php">[osint_deck]
 [osint_deck category="dominios" access="gratuito" limit="20"]</code></pre>
-                    <p><strong>Parámetros:</strong></p>
+                        <button class="copy-btn" data-clipboard-target="code">Copiar</button>
+                    </div>
+
+                    <p><strong>Parámetros disponibles:</strong></p>
                     <ul>
-                        <li><code>category</code>: filtra por categoría de herramienta</li>
-                        <li><code>access</code>: tipo de acceso (por ejemplo, gratuito, registro, pago)</li>
-                        <li><code>limit</code>: cantidad inicial de resultados (por defecto 20)</li>
+                        <li><code>category</code>: filtra por categoría de herramienta (ej. "dominios", "red").</li>
+                        <li><code>access</code>: tipo de acceso (ej. "gratuito", "registro", "pago").</li>
+                        <li><code>limit</code>: cantidad inicial de resultados (por defecto 20).</li>
                     </ul>
+
+                    <div class="callout tip">
+                        <i data-feather="zap"></i>
+                        <div>
+                            <strong>Tip:</strong> Puedes combinar múltiples parámetros para crear vistas personalizadas
+                            del mazo según tus necesidades.
+                        </div>
+                    </div>
                 </section>
 
-                <section id="installation">
+                <section id="installation" class="reveal">
                     <h2>Instalación</h2>
+
                     <h3>Instalación manual</h3>
                     <ol>
-                        <li>Descargar el repositorio.</li>
+                        <li>Descargar el repositorio desde GitHub.</li>
                         <li>Copiar la carpeta del plugin dentro de: <code>wp-content/plugins/osint-deck</code></li>
                         <li>En el panel de WordPress ir a: <strong>Plugins → OSINT Deck → Activar</strong>.</li>
                     </ol>
-                    <p>(Opcional) Importar herramientas usando los JSON de <code>template-de-herramientas/*.json</code>.
-                    </p>
+                    <p><em>(Opcional) Importar herramientas usando los JSON de
+                            <code>template-de-herramientas/*.json</code>.</em></p>
 
-                    <h3>WP-CLI</h3>
-                    <pre><code>wp plugin activate osint-deck</code></pre>
+                    <h3>Vía WP-CLI</h3>
+                    <div class="code-block-wrapper">
+                        <pre class="line-numbers"><code class="language-bash">wp plugin activate osint-deck</code></pre>
+                        <button class="copy-btn" data-clipboard-target="code">Copiar</button>
+                    </div>
+
+                    <div class="callout warning">
+                        <i data-feather="alert-triangle"></i>
+                        <div>
+                            <strong>Importante:</strong> Asegúrate de tener WordPress 6.4+ y PHP 8.0+ antes de instalar
+                            el plugin.
+                        </div>
+                    </div>
                 </section>
 
-                <section id="validation">
+                <section id="validation" class="reveal">
                     <h2>Validación de dominios y TLDs</h2>
                     <ul>
                         <li>Lista IANA local en <code>assets/data/tlds-alpha-by-domain.txt</code>.</li>
                         <li>Tarea semanal: <code>osd_refresh_tlds_weekly</code>.</li>
-                        <li>Validación offline mediante <code>osd_is_valid_domain()</code> (sin llamadas externas).</li>
+                        <li>Validación offline mediante <code>osd_is_valid_domain()</code> (sin llamadas externas para
+                            proteger la privacidad).</li>
                     </ul>
                 </section>
 
-                <section id="rate-limiting">
+                <section id="rate-limiting" class="reveal">
                     <h2>Rate limiting</h2>
-                    <p>Implementado en <code>osd_user_event</code>:</p>
+                    <p>Implementado en <code>osd_user_event</code> para prevenir abusos:</p>
                     <ul>
-                        <li>60 acciones por minuto por IP</li>
-                        <li>1 reporte por herramienta por día</li>
+                        <li>60 acciones por minuto por IP.</li>
+                        <li>1 reporte por herramienta por día.</li>
                         <li>Respuestas JSON consistentes (códigos como <code>rate_limited</code>,
-                            <code>report_limit</code>)</li>
+                            <code>report_limit</code>).
+                        </li>
                     </ul>
                 </section>
 
-                <section id="admin">
+                <section id="admin" class="reveal">
                     <h2>Administración</h2>
                     <p>Funcionalidades del panel de administración:</p>
                     <ul>
-                        <li>Configuración de límites y opciones de seguridad</li>
-                        <li>CRUD de herramientas</li>
-                        <li>Importación y exportación en JSON</li>
-                        <li>Logs de usuario y logs administrativos</li>
-                        <li>Métricas resumidas por herramienta</li>
+                        <li>Configuración de límites y opciones de seguridad.</li>
+                        <li>CRUD (Crear, Leer, Actualizar, Borrar) de herramientas.</li>
+                        <li>Importación y exportación en formato JSON.</li>
+                        <li>Logs de usuario y logs administrativos.</li>
+                        <li>Métricas resumidas por herramienta.</li>
                     </ul>
                 </section>
 
-                <section id="hooks">
+                <section id="hooks" class="reveal">
                     <h2>Hooks y tareas programadas</h2>
                     <h3>Cron jobs principales</h3>
                     <ul>
-                        <li><code>osd_metrics_daily</code></li>
-                        <li><code>osd_refresh_tlds_weekly</code></li>
+                        <li><code>osd_metrics_daily</code>: Generación de estadísticas diarias.</li>
+                        <li><code>osd_refresh_tlds_weekly</code>: Actualización de la lista de TLDs.</li>
                     </ul>
                 </section>
 
-                <section id="ajax">
+                <section id="ajax" class="reveal">
                     <h2>AJAX</h2>
                     <h3>Públicos</h3>
                     <ul>
-                        <li><code>osd_user_event</code></li>
-                        <li><code>osd_check_tld</code></li>
+                        <li><code>osd_user_event</code>: Registro de interacciones.</li>
+                        <li><code>osd_check_tld</code>: Validación asíncrona.</li>
                     </ul>
                     <h3>Administrativos</h3>
                     <ul>
@@ -169,18 +253,66 @@
                     </ul>
                 </section>
 
-                <section id="roadmap">
+                <section id="roadmap" class="reveal">
                     <h2>Roadmap inicial</h2>
                     <ul>
-                        <li>[ ] Soporte para nuevos tipos de input avanzados</li>
-                        <li>[ ] Exportación de mazos personalizados</li>
-                        <li>[ ] Dashboard ampliado con comparativas de métricas</li>
-                        <li>[ ] Integración con fuentes externas OSINT</li>
-                        <li>[ ] Publicación en WordPress Plugin Directory</li>
+                        <li>[ ] Soporte para nuevos tipos de input avanzados.</li>
+                        <li>[ ] Exportación de mazos personalizados.</li>
+                        <li>[ ] Dashboard ampliado con comparativas de métricas.</li>
+                        <li>[ ] Integración con fuentes externas OSINT.</li>
+                        <li>[ ] Publicación en WordPress Plugin Directory.</li>
                     </ul>
                 </section>
+                <section id="acknowledgments" class="reveal">
+                    <h2>Agradecimientos</h2>
 
-                <section id="authors">
+                    <div class="callout info">
+                        <i data-feather="award"></i>
+                        <div>
+                            <strong>Proyecto Académico:</strong> OSINT Deck fue desarrollado como parte de la
+                            Licenciatura en Ciberseguridad de la <strong>Universidad Nacional Raúl Scalabrini
+                                Ortiz</strong>, San Isidro, Buenos Aires, Argentina.
+                        </div>
+                    </div>
+
+                    <h3>Autoridades</h3>
+                    <p>
+                        Agradecemos profundamente a las autoridades de la universidad por su apoyo y visión:
+                    </p>
+
+                    <!-- Contenedor dinámico para autoridades (renderizado por acknowledgments.js) -->
+                    <div id="authorities-grid" class="ack-grid"></div>
+
+                    <h3>Cuerpo Docente</h3>
+                    <p>
+                        Este proyecto no habría sido posible sin la dedicación, conocimiento y guía de nuestros
+                        profesores:
+                    </p>
+
+                    <!-- Contenedor dinámico para docentes (renderizado por acknowledgments.js) -->
+                    <div id="professors-grid" class="ack-grid ack-grid-professors"></div>
+
+                    <h3>Comunidad y Colaboración</h3>
+                    <p>
+                        Agradecemos también a la comunidad de
+                        <a href="https://osint.com.ar" target="_blank" rel="noopener noreferrer">OSINT.com.ar</a>,
+                        cuyo trabajo y dedicación en el campo de la inteligencia de fuentes abiertas inspiró y dio
+                        contexto a este proyecto.
+                    </p>
+
+                    <div class="callout tip" style="margin-top: 30px;">
+                        <i data-feather="heart"></i>
+                        <div>
+                            <strong>Gratitud:</strong> Este proyecto es el resultado del esfuerzo conjunto de
+                            estudiantes, docentes y la comunidad OSINT. Gracias a todos los que hicieron posible este
+                            trabajo.
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <section id="authors" class="reveal">
                     <h2>Autores</h2>
                     <p>Equipo de desarrollo:</p>
                     <ul>
@@ -195,19 +327,33 @@
         </div>
     </div>
 
+    <button id="back-to-top" title="Volver arriba">
+        <i data-feather="arrow-up"></i>
+    </button>
+
     <footer>
         <div class="container">
             <div class="footer-content">
                 <p>&copy; 2025 OSINT Deck. Licencia MIT.</p>
                 <div class="footer-links">
-                    <a href="https://github.com/tu-usuario/osint-deck">GitHub</a>
-                    <a href="#">Arriba</a>
+                    <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
+                    <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
+                    <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck"><i data-feather="github"></i> GitHub</a>
+                    <a href="#"><i data-feather="arrow-up"></i> Arriba</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/acknowledgments.js"></script>
 </body>
 
 </html>

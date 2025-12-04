@@ -1,27 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OSINT Deck - Centraliza tus herramientas OSINT</title>
-    <meta name="description" content="Plugin de WordPress para organizar herramientas OSINT en un mazo dinámico con detección automática de tipos de datos.">
+    <meta name="description"
+        content="Plugin de WordPress para organizar herramientas OSINT en un mazo dinámico con detección automática de tipos de datos.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
+
 <body>
     <header>
         <div class="container">
             <nav>
                 <a href="index.html" class="logo">
-                    <i data-feather="layers"></i> OSINT Deck
+                    <img src="assets/img/logo.png" alt="OSINT Deck" height="40">
                 </a>
                 <div class="nav-links">
-                    <a href="index.html">Inicio</a>
-                    <a href="docs.html">Documentación</a>
-                    <a href="https://github.com/tu-usuario/osint-deck" target="_blank">GitHub</a>
+                    <a href="index.html"><i data-feather="home"></i> Inicio</a>
+                    <a href="docs.html"><i data-feather="book-open"></i> Documentación</a>
+                    <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
+                    <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
+                    <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck" target="_blank"><i data-feather="github"></i>
+                        GitHub</a>
                 </div>
             </nav>
         </div>
@@ -29,12 +40,49 @@
 
     <main>
         <section class="hero">
-            <div class="container">
-                <h1>Tu arsenal OSINT, unificado.</h1>
-                <p>Detecta automáticamente tipos de datos y activa las herramientas correctas al instante. Organiza, analiza y comparte con OSINT Deck.</p>
+            <div class="hero-bg-layer"></div>
+            <div class="container hero-content">
+                <h1>Tu arsenal OSINT unificado en WordPress.</h1>
+                <p>Detecta tipos de datos automáticamente y muestra las herramientas correspondientes al instante.
+                    Centraliza, organiza y acelera tus investigaciones.</p>
                 <div class="hero-btns">
-                    <a href="https://github.com/tu-usuario/osint-deck/archive/refs/heads/main.zip" class="btn btn-primary">Descargar Plugin</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck" class="btn btn-primary">Ver Plugin</a>
                     <a href="docs.html" class="btn btn-secondary">Leer Documentación</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="quick-links" style="padding: 4rem 0; background-color: var(--bg-secondary);">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Ecosistema OSINT Deck</h2>
+                    <p>Acceso directo a los recursos del proyecto.</p>
+                </div>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <a href="https://github.com/OsintDeck/OsintDeck" class="card"
+                        style="text-decoration: none; color: inherit; text-align: center;">
+                        <div class="card-icon"><i data-feather="package"></i></div>
+                        <h3>Plugin</h3>
+                        <p>Repositorio GitHub</p>
+                    </a>
+                    <a href="https://OsintDeck.github.io" class="card"
+                        style="text-decoration: none; color: inherit; text-align: center;">
+                        <div class="card-icon"><i data-feather="book"></i></div>
+                        <h3>Documentación</h3>
+                        <p>Manuales y Guías</p>
+                    </a>
+                    <a href="https://github.com/OsintDeck/Pruebas_de_Calidad/" class="card"
+                        style="text-decoration: none; color: inherit; text-align: center;">
+                        <div class="card-icon"><i data-feather="check-circle"></i></div>
+                        <h3>Pruebas QA</h3>
+                        <p>Reportes de Calidad</p>
+                    </a>
+                    <a href="https://github.com/OsintDeck/Glosario" class="card"
+                        style="text-decoration: none; color: inherit; text-align: center;">
+                        <div class="card-icon"><i data-feather="list"></i></div>
+                        <h3>Glosario</h3>
+                        <p>Términos y Conceptos</p>
+                    </a>
                 </div>
             </div>
         </section>
@@ -98,13 +146,23 @@
             <div class="footer-content">
                 <p>&copy; 2025 OSINT Deck. Licencia MIT.</p>
                 <div class="footer-links">
-                    <a href="https://github.com/tu-usuario/osint-deck">GitHub</a>
-                    <a href="docs.html">Docs</a>
+                    <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
+                    <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
+                    <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck"><i data-feather="github"></i> GitHub</a>
+                    <a href="docs.html"><i data-feather="book-open"></i> Docs</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
+
 </html>
