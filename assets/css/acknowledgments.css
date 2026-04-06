@@ -4,25 +4,99 @@
 
 .ack-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 16px;
-    margin-top: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-top: 18px;
 }
 
 .ack-grid-professors {
-    margin-top: 12px;
+    margin-top: 16px;
+}
+
+/* Autoridades: tres columnas alineadas; tarjetas más grandes que el resto */
+#authorities-grid.ack-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+}
+
+@media (min-width: 720px) {
+    #authorities-grid.ack-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+}
+
+/* Docentes: 5 por fila en escritorio; menos columnas en pantallas chicas */
+#professors-grid.ack-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+@media (min-width: 560px) {
+    #professors-grid.ack-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 880px) {
+    #professors-grid.ack-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1040px) {
+    #professors-grid.ack-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 1240px) {
+    #professors-grid.ack-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 14px;
+    }
+
+    #professors-grid .acknowledgment-card {
+        padding: 16px 12px;
+        gap: 12px;
+    }
+
+    #professors-grid .acknowledgment-avatar-wrap {
+        width: 68px;
+        height: 68px;
+    }
+
+    #professors-grid .acknowledgment-card--photo .acknowledgment-avatar-wrap {
+        width: 76px;
+        height: 76px;
+    }
+
+    #professors-grid .acknowledgment-name {
+        font-size: 0.93rem;
+        line-height: 1.38;
+    }
+
+    #professors-grid .acknowledgment-header {
+        gap: 8px;
+    }
+
+    #professors-grid .linkedin-icon svg {
+        width: 18px;
+        height: 18px;
+    }
 }
 
 /* Card Container */
 .acknowledgment-card {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid rgba(148, 163, 184, 0.15);
-    transition: all 0.2s ease;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
 }
 
 .acknowledgment-card:hover {
@@ -48,6 +122,9 @@
     object-fit: cover;
     object-position: center 28%;
     border-radius: 0;
+    border: none;
+    outline: none;
+    box-shadow: none;
 }
 
 /* Fotos reales: un poco más grandes para legibilidad del rostro */
@@ -57,17 +134,91 @@
 }
 
 #authorities-grid .acknowledgment-avatar-wrap {
-    width: 56px;
-    height: 56px;
+    width: 88px;
+    height: 88px;
 }
 
 #authorities-grid .acknowledgment-card--photo .acknowledgment-avatar-wrap {
-    width: 64px;
-    height: 64px;
+    width: 100px;
+    height: 100px;
 }
 
 #authorities-grid .acknowledgment-card {
-    padding: 12px 14px;
+    padding: 22px 24px;
+    gap: 20px;
+    border-radius: 14px;
+}
+
+#authorities-grid .acknowledgment-name {
+    font-size: 1.14rem;
+    line-height: 1.3;
+}
+
+#authorities-grid .acknowledgment-role {
+    font-size: 0.93rem;
+    line-height: 1.45;
+    color: #b6beca;
+}
+
+#authorities-grid .linkedin-icon {
+    padding: 4px 6px;
+}
+
+#authorities-grid .linkedin-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Docentes: tarjeta vertical centrada — más aire para nombres largos */
+#professors-grid .acknowledgment-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 22px 18px;
+    gap: 16px;
+}
+
+#professors-grid .acknowledgment-meta {
+    align-items: center;
+}
+
+#professors-grid .acknowledgment-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+#professors-grid .acknowledgment-name {
+    font-size: 1.02rem;
+    line-height: 1.45;
+    max-width: 100%;
+    text-wrap: balance;
+}
+
+#professors-grid .acknowledgment-role {
+    margin-top: 4px;
+    line-height: 1.45;
+    max-width: 100%;
+}
+
+#professors-grid .acknowledgment-avatar-wrap {
+    width: 76px;
+    height: 76px;
+}
+
+#professors-grid .acknowledgment-card--photo .acknowledgment-avatar-wrap {
+    width: 84px;
+    height: 84px;
+}
+
+#professors-grid .linkedin-icon {
+    padding: 6px 8px;
+}
+
+#professors-grid .linkedin-icon svg {
+    width: 20px;
+    height: 20px;
 }
 
 /* Content/Meta Container */
@@ -89,20 +240,18 @@
 }
 
 .acknowledgment-name {
-    color: #e5e7eb;
+    color: #f3f4f6;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.98rem;
     margin: 0;
-    /* Reset h4 margin */
-    line-height: 1.2;
+    line-height: 1.3;
 }
 
 .acknowledgment-role {
-    font-size: 0.8rem;
-    color: #9ca3af;
+    font-size: 0.82rem;
+    color: #a8b0bd;
     margin: 0;
-    /* Reset p margin */
-    line-height: 1.3;
+    line-height: 1.35;
 }
 
 /* LinkedIn Icon */
@@ -131,31 +280,66 @@
 /* Responsive */
 @media (max-width: 768px) {
     .ack-grid {
+        gap: 14px;
+    }
+
+    #authorities-grid.ack-grid {
         grid-template-columns: 1fr;
-        gap: 12px;
+    }
+
+    #professors-grid.ack-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
     }
 
     .acknowledgment-card {
-        padding: 8px 10px;
+        padding: 12px 14px;
+    }
+
+    #professors-grid .acknowledgment-card {
+        padding: 20px 16px;
     }
 
     .acknowledgment-avatar-wrap {
-        width: 44px;
-        height: 44px;
+        width: 46px;
+        height: 46px;
     }
 
     .acknowledgment-card--photo .acknowledgment-avatar-wrap {
-        width: 48px;
-        height: 48px;
+        width: 50px;
+        height: 50px;
     }
 
     #authorities-grid .acknowledgment-avatar-wrap {
-        width: 52px;
-        height: 52px;
+        width: 80px;
+        height: 80px;
     }
 
     #authorities-grid .acknowledgment-card--photo .acknowledgment-avatar-wrap {
-        width: 58px;
-        height: 58px;
+        width: 92px;
+        height: 92px;
     }
+
+    #authorities-grid .acknowledgment-card {
+        padding: 18px 20px;
+    }
+
+    #authorities-grid .acknowledgment-name {
+        font-size: 1.05rem;
+    }
+
+    #authorities-grid .acknowledgment-role {
+        font-size: 0.88rem;
+    }
+
+    #professors-grid .acknowledgment-avatar-wrap {
+        width: 72px;
+        height: 72px;
+    }
+
+    #professors-grid .acknowledgment-card--photo .acknowledgment-avatar-wrap {
+        width: 78px;
+        height: 78px;
+    }
+
 }

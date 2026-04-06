@@ -1980,7 +1980,8 @@ footer a:hover {
     background-color: rgba(0, 115, 255, 0.06);
 }
 
-.acknowledgment-avatar {
+/* Solo listas legacy (.acknowledgment-list); el grid de docs usa la misma clase en otro contexto */
+.acknowledgment-list .acknowledgment-item .acknowledgment-avatar {
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -2016,7 +2017,7 @@ a.acknowledgment-name:hover {
     padding: 10px;
 }
 
-.professors-list .acknowledgment-avatar {
+.professors-list .acknowledgment-item .acknowledgment-avatar {
     width: 28px;
     height: 28px;
 }
@@ -2036,7 +2037,7 @@ a.acknowledgment-name:hover {
         padding: 10px;
     }
 
-    .acknowledgment-avatar {
+    .acknowledgment-list .acknowledgment-item .acknowledgment-avatar {
         width: 28px;
         height: 28px;
     }
