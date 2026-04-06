@@ -16,7 +16,7 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <link rel="icon" href="assets/img/osintdeck-logo-light.png" type="image/png">
 </head>
 
 <body>
@@ -24,7 +24,7 @@
         <div class="container">
             <nav>
                 <a href="index.html" class="logo">
-                    <img src="assets/img/logo.png" alt="OSINT Deck" height="40">
+                    <img src="assets/img/osintdeck-logo-light.png" alt="OsintDEck BETA" width="280" height="80" decoding="async">
                 </a>
                 <div class="nav-links">
                     <a href="index.html"><i data-feather="home"></i> Inicio</a>
@@ -32,54 +32,67 @@
                     <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
                     <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
                     <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
-                    <a href="https://github.com/OsintDeck/OsintDeck" target="_blank"><i data-feather="github"></i>
-                        GitHub</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck.github.io" target="_blank" rel="noopener" title="Código de este sitio"><i data-feather="github"></i> Sitio (GitHub)</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck" target="_blank" rel="noopener"><i data-feather="package"></i> Plugin</a>
                 </div>
             </nav>
         </div>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero-bg-layer"></div>
+        <section class="hero hero--home" aria-label="Presentación">
+            <div class="hero-bg-layer" aria-hidden="true">
+                <div class="hero-bg-shift">
+                    <div class="hero-bg-parallax"></div>
+                </div>
+            </div>
             <div class="container hero-content">
-                <h1>Tu arsenal OSINT unificado en WordPress.</h1>
-                <p>Detecta tipos de datos automáticamente y muestra las herramientas correspondientes al instante.
-                    Centraliza, organiza y acelera tus investigaciones.</p>
+                <div class="hero-brand">
+                    <img class="hero-logo" src="assets/img/osintdeck-logo-light.png" alt="OsintDEck BETA" width="640"
+                        height="200" decoding="async">
+                </div>
+                <h1 class="hero-headline">
+                    <span class="hero-headline__chunk">Tu arsenal</span>
+                    <span class="hero-headline__chunk hero-headline__accent">OSINT</span>
+                    <span class="hero-headline__chunk hero-headline__muted">unificado en WordPress.</span>
+                </h1>
+                <p class="hero-lead">
+                    <span class="hero-lead__line">Detecta tipos de datos automáticamente y muestra las herramientas
+                        correspondientes al instante.</span>
+                    <span class="hero-lead__line">Centraliza, organiza y acelera tus investigaciones.</span>
+                </p>
                 <div class="hero-btns">
-                    <a href="https://github.com/OsintDeck/OsintDeck" class="btn btn-primary">Ver Plugin</a>
-                    <a href="docs.html" class="btn btn-secondary">Leer Documentación</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck" class="btn btn-primary"><i
+                            data-feather="github"></i> Ver Plugin</a>
+                    <a href="docs.html" class="btn btn-secondary"><i data-feather="book-open"></i> Leer
+                        Documentación</a>
                 </div>
             </div>
         </section>
 
-        <section class="quick-links" style="padding: 4rem 0; background-color: var(--bg-secondary);">
+        <section class="quick-links">
             <div class="container">
                 <div class="section-title">
                     <h2>Ecosistema OSINT Deck</h2>
                     <p>Acceso directo a los recursos del proyecto.</p>
                 </div>
-                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-                    <a href="https://github.com/OsintDeck/OsintDeck" class="card"
-                        style="text-decoration: none; color: inherit; text-align: center;">
+                <div class="grid quick-links__grid">
+                    <a href="https://github.com/OsintDeck/OsintDeck" class="card quick-links__card">
                         <div class="card-icon"><i data-feather="package"></i></div>
                         <h3>Plugin</h3>
                         <p>Repositorio GitHub</p>
                     </a>
-                    <a href="https://osintdeck.github.io/docs.html" class="card"
-                        style="text-decoration: none; color: inherit; text-align: center;">
+                    <a href="https://osintdeck.github.io/docs.html" class="card quick-links__card">
                         <div class="card-icon"><i data-feather="book"></i></div>
                         <h3>Documentación</h3>
                         <p>Manuales y Guías</p>
                     </a>
-                    <a href="https://github.com/OsintDeck/Pruebas_de_Calidad/" class="card"
-                        style="text-decoration: none; color: inherit; text-align: center;">
+                    <a href="https://github.com/OsintDeck/Pruebas_de_Calidad/" class="card quick-links__card">
                         <div class="card-icon"><i data-feather="check-circle"></i></div>
                         <h3>Pruebas QA</h3>
                         <p>Reportes de Calidad</p>
                     </a>
-                    <a href="https://github.com/OsintDeck/Glosario" class="card"
-                        style="text-decoration: none; color: inherit; text-align: center;">
+                    <a href="https://github.com/OsintDeck/Glosario" class="card quick-links__card">
                         <div class="card-icon"><i data-feather="list"></i></div>
                         <h3>Glosario</h3>
                         <p>Términos y Conceptos</p>
@@ -113,8 +126,8 @@
                         <div class="card-icon">
                             <i data-feather="shield"></i>
                         </div>
-                        <h3>Rate Limiting</h3>
-                        <p>Protección integrada contra abuso con límites por IP y reportes diarios.</p>
+                        <h3>Seguridad en frontend</h3>
+                        <p>Turnstile opcional, nonces en AJAX y validaciones para reducir abuso (p. ej. lotes acotados en comprobación de iframes).</p>
                     </div>
                     <div class="card">
                         <div class="card-icon">
@@ -145,7 +158,7 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <p>&copy; 2025 OSINT Deck. Licencia MIT.</p>
+                <p>&copy; 2026 OSINT Deck. Documentación y sitio: <a href="https://github.com/OsintDeck/OsintDeck.github.io" target="_blank" rel="noopener">GitHub Pages</a>. Código del plugin bajo licencias GPL.</p>
                 <div class="footer-links">
                     <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
                     <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
@@ -163,6 +176,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="assets/js/gsap-init.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 

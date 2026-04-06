@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" role="img" aria-label="OSINT Deck">
+  <rect width="160" height="40" rx="8" fill="#061494"/>
+  <text x="12" y="26" font-family="system-ui,Segoe UI,Inter,sans-serif" font-size="15" font-weight="700" fill="#00b1ff">OSINT</text>
+  <text x="58" y="26" font-family="system-ui,Segoe UI,Inter,sans-serif" font-size="15" font-weight="600" fill="#ededed">Deck</text>
+</svg>

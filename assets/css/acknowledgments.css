@@ -30,28 +30,40 @@
     background: rgba(30, 41, 59, 0.9);
 }
 
-/* Avatar */
-.acknowledgment-avatar {
+/* Avatar: marco circular + recorte para encuadrar rostros (object-fit: cover) */
+.acknowledgment-avatar-wrap {
     width: 48px;
     height: 48px;
-    border-radius: 999px;
     flex-shrink: 0;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(30, 41, 59, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.2);
 }
 
-/* Authority specific styling if needed, though JS doesn't seem to add a specific class for it on the card itself, only passes isAuthority to createCard but doesn't add class to card. 
-   Wait, the JS doesn't add a class for authority card variant. 
-   It just changes avatar size in the src URL.
-   Let's check if we need specific CSS for authority avatars.
-   The JS sets size in URL but the CSS sets width/height.
-   If I want larger avatars for authorities, I need a way to target them.
-   The JS DOES NOT add a class to the card for authorities.
-   However, the HTML has separate containers: #authorities-grid and #professors-grid.
-   So I can target .authorities-grid .acknowledgment-card .acknowledgment-avatar
-*/
+.acknowledgment-avatar {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 28%;
+    border-radius: 0;
+}
 
-#authorities-grid .acknowledgment-avatar {
+/* Fotos reales: un poco más grandes para legibilidad del rostro */
+.acknowledgment-card--photo .acknowledgment-avatar-wrap {
+    width: 54px;
+    height: 54px;
+}
+
+#authorities-grid .acknowledgment-avatar-wrap {
     width: 56px;
     height: 56px;
+}
+
+#authorities-grid .acknowledgment-card--photo .acknowledgment-avatar-wrap {
+    width: 64px;
+    height: 64px;
 }
 
 #authorities-grid .acknowledgment-card {
@@ -127,13 +139,23 @@
         padding: 8px 10px;
     }
 
-    .acknowledgment-avatar {
-        width: 40px;
-        height: 40px;
+    .acknowledgment-avatar-wrap {
+        width: 44px;
+        height: 44px;
     }
 
-    #authorities-grid .acknowledgment-avatar {
+    .acknowledgment-card--photo .acknowledgment-avatar-wrap {
         width: 48px;
         height: 48px;
+    }
+
+    #authorities-grid .acknowledgment-avatar-wrap {
+        width: 52px;
+        height: 52px;
+    }
+
+    #authorities-grid .acknowledgment-card--photo .acknowledgment-avatar-wrap {
+        width: 58px;
+        height: 58px;
     }
 }

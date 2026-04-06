@@ -1,359 +1,1459 @@
 <!DOCTYPE html>
+
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentación - OSINT Deck</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/acknowledgments.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
-    <script src="https://unpkg.com/feather-icons"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Documentación - OSINT Deck</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Fira+Code&amp;display=swap" rel="stylesheet"/>
+<link href="assets/css/style.css" rel="stylesheet"/>
+<link href="assets/css/acknowledgments.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet"/>
+<script src="https://unpkg.com/feather-icons"></script>
+<link href="assets/img/osintdeck-logo-light.png" rel="icon" type="image/png"/>
+<meta content="Manual OSINT Deck: flujo de puesta en marcha (ZIP, WordPress), integraciones Google y Cloudflare Turnstile, reportes, arquitectura src/, motor de decisiones, Naive Bayes, referencia AJAX y cron." name="description"/>
 </head>
+<body class="docs-page">
+<header>
+<div class="container">
+<nav>
+<a class="logo" href="index.html">
+<img alt="OsintDEck BETA" decoding="async" height="80" src="assets/img/osintdeck-logo-light.png" width="280"/>
+</a>
+<div class="nav-links">
+<a href="index.html"><i data-feather="home"></i> Inicio</a>
+<a class="active" href="docs.html"><i data-feather="book-open"></i> Documentación</a>
+<a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
+<a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
+<a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
+<a href="https://github.com/OsintDeck/OsintDeck.github.io" rel="noopener" target="_blank"><i data-feather="github"></i> Sitio</a>
+<a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank"><i data-feather="package"></i> Plugin</a>
+</div>
+</nav>
+</div>
+</header>
+<div class="container">
+<div class="docs-layout">
+<aside class="sidebar">
+<div class="sidebar-header">
+<h4>Navegación</h4>
+<input class="sidebar-search" id="sidebar-search" placeholder="Buscar sección..." type="text"/>
+</div>
+<nav aria-label="Secciones del manual" class="sidebar-nav">
+<ul class="sidebar-tree" id="sidebar-nav">
+<li class="sidebar-tree__group is-expanded">
+<button aria-controls="sidebar-sub-start" aria-expanded="true" class="sidebar-tree__toggle" id="sidebar-tg-start" type="button">
+<span aria-hidden="true" class="sidebar-tree__chevron"><i data-feather="chevron-right"></i></span>
+<span class="sidebar-tree__label">Inicio del manual</span>
+</button>
+<ul aria-labelledby="sidebar-tg-start" class="sidebar-tree__children" id="sidebar-sub-start" role="group">
+<li><a class="active" href="#intro">Introducción</a></li>
+<li><a href="#doc-reading-paths">Estructura y recorridos</a></li>
+<li><a href="#guia-rapida">Guía rápida</a></li>
+</ul>
+</li>
+<li class="sidebar-tree__group">
+<button aria-controls="sidebar-sub-deploy" aria-expanded="false" class="sidebar-tree__toggle" id="sidebar-tg-deploy" type="button">
+<span aria-hidden="true" class="sidebar-tree__chevron"><i data-feather="chevron-right"></i></span>
+<span class="sidebar-tree__label">Puesta en marcha</span>
+</button>
+<ul aria-labelledby="sidebar-tg-deploy" class="sidebar-tree__children" id="sidebar-sub-deploy" role="group">
+<li><a href="#wordpress-base">Tener WordPress</a></li>
+<li><a href="#install-easy">Instalar (ZIP)</a></li>
+<li><a href="#install-updates">Requisitos y actualizaciones</a></li>
+<li><a href="#installation">Composer / WP-CLI</a></li>
+<li><a href="#uso-admin">Escritorio WP</a></li>
+<li><a href="#uso-publico">Web pública</a></li>
+<li><a href="#shortcodes">Shortcodes</a></li>
+<li><a href="#theme-ui">Tema y barra</a></li>
+</ul>
+</li>
+<li class="sidebar-tree__group">
+<button aria-controls="sidebar-sub-ops" aria-expanded="false" class="sidebar-tree__toggle" id="sidebar-tg-ops" type="button">
+<span aria-hidden="true" class="sidebar-tree__chevron"><i data-feather="chevron-right"></i></span>
+<span class="sidebar-tree__label">Integración y operación</span>
+</button>
+<ul aria-labelledby="sidebar-tg-ops" class="sidebar-tree__children" id="sidebar-sub-ops" role="group">
+<li><a href="#auth-google">Google (visitantes)</a></li>
+<li><a href="#tool-reports">Reportes de herramientas</a></li>
+<li><a href="#github-issues-reparacion">GitHub e issues de reparación</a></li>
+<li><a href="#security-performance">Seguridad y rendimiento</a></li>
+<li><a href="#validation">Dominios y TLDs</a></li>
+<li><a href="#user-data">Historial y favoritos</a></li>
+<li><a href="#metrics-dashboard">Métricas</a></li>
+<li><a href="#admin">Administración (menú)</a></li>
+</ul>
+</li>
+<li class="sidebar-tree__group">
+<button aria-controls="sidebar-sub-dev" aria-expanded="false" class="sidebar-tree__toggle" id="sidebar-tg-dev" type="button">
+<span aria-hidden="true" class="sidebar-tree__chevron"><i data-feather="chevron-right"></i></span>
+<span class="sidebar-tree__label">Arquitectura y código</span>
+</button>
+<ul aria-labelledby="sidebar-tg-dev" class="sidebar-tree__children" id="sidebar-sub-dev" role="group">
+<li><a href="#architecture">Arquitectura del sistema</a></li>
+<li><a href="#decision-engine">Motor de decisiones</a></li>
+<li><a href="#hooks">Cron y tareas</a></li>
+<li><a href="#ajax">AJAX (referencia)</a></li>
+</ul>
+</li>
+<li class="sidebar-tree__group">
+<button aria-controls="sidebar-sub-meta" aria-expanded="false" class="sidebar-tree__toggle" id="sidebar-tg-meta" type="button">
+<span aria-hidden="true" class="sidebar-tree__chevron"><i data-feather="chevron-right"></i></span>
+<span class="sidebar-tree__label">Contexto y anexos</span>
+</button>
+<ul aria-labelledby="sidebar-tg-meta" class="sidebar-tree__children" id="sidebar-sub-meta" role="group">
+<li><a href="#about">Sobre el proyecto</a></li>
+<li><a href="#features">Características</a></li>
+<li><a href="#docs-imagenes">Guía visual (capturas)</a></li>
+<li><a href="#roadmap">Roadmap</a></li>
+<li><a href="#acknowledgments">Agradecimientos</a></li>
+<li><a href="#authors">Autores</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+<main class="docs-content">
+<div aria-label="Contenido del manual" class="docs-panel" id="docs-panel" tabindex="-1">
 
-<body>
-    <header>
-        <div class="container">
-            <nav>
-                <a href="index.html" class="logo">
-                    <img src="assets/img/logo.png" alt="OSINT Deck" height="40">
-                </a>
-                <div class="nav-links">
-                    <a href="index.html"><i data-feather="home"></i> Inicio</a>
-                    <a href="docs.html" class="active"><i data-feather="book-open"></i> Documentación</a>
-                    <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
-                    <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
-                    <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
-                    <a href="https://github.com/OsintDeck/OsintDeck" target="_blank"><i data-feather="github"></i>
-                        GitHub</a>
-                </div>
-            </nav>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="docs-layout">
-            <aside class="sidebar">
-                <div class="sidebar-header">
-                    <h4>Navegación</h4>
-                    <input type="text" id="sidebar-search" placeholder="Buscar sección..." class="sidebar-search">
-                </div>
-                <nav>
-                    <ul id="sidebar-nav">
-                        <li><a href="#intro" class="active">Introducción</a></li>
-                        <li><a href="#about">Sobre el Proyecto</a></li>
-                        <li><a href="#features">Características</a></li>
-                        <li><a href="#shortcode">Shortcode</a></li>
-                        <li><a href="#installation">Instalación</a></li>
-                        <li><a href="#validation">Validación de Dominios</a></li>
-                        <li><a href="#rate-limiting">Rate Limiting</a></li>
-                        <li><a href="#admin">Administración</a></li>
-                        <li><a href="#hooks">Hooks y Cron</a></li>
-                        <li><a href="#ajax">AJAX</a></li>
-                        <li><a href="#roadmap">Roadmap</a></li>
-                        <li><a href="#acknowledgments">Agradecimientos</a></li>
-                        <li><a href="#authors">Autores</a></li>
-                    </ul>
-                </nav>
-            </aside>
-
-            <main class="docs-content">
-                <div class="docs-hero">
-                    <div class="docs-hero-bg-layer"></div>
-                    <div class="docs-hero-content">
-                        <div class="docs-header">
-                            <h1>Documentación de OSINT Deck</h1>
-                            <p class="docs-subtitle">Guía completa para implementar y configurar el plugin</p>
-                            <div class="docs-meta">
-                                <span class="version-badge">v1.0</span>
-                                <a href="https://github.com/OsintDeck/OsintDeck" target="_blank" class="github-link">
-                                    <i data-feather="github"></i> Ver en GitHub
-                                </a>
+<div aria-label="Sección anterior y siguiente" class="docs-section-pager" role="navigation">
+<button class="docs-section-pager__btn" disabled="" id="sidebar-pager-prev" type="button">
+<i data-feather="chevron-left"></i>
+<span>Anterior</span>
+</button>
+<button class="docs-section-pager__btn" id="sidebar-pager-next" type="button">
+<span>Siguiente</span>
+<i data-feather="chevron-right"></i>
+</button>
+</div><section class="docs-section reveal is-active" id="intro">
+<div class="docs-hero docs-hero--embedded">
+<div aria-hidden="true" class="docs-hero-bg-layer"></div>
+<div class="docs-hero-content">
+<div class="docs-hero-inner">
+<a aria-label="Volver al inicio" class="docs-hero-logo" href="index.html">
+<img alt="OsintDEck BETA" decoding="async" height="78" src="assets/img/osintdeck-logo-light.png" width="260"/>
+</a>
+<div class="docs-hero-main">
+<div class="docs-header">
+<h1>Documentación — OSINT Deck</h1>
+<p class="docs-subtitle">Manual único: puesta en marcha para administradores,
+                                                integraciones, arquitectura del código y referencia técnica — en un flujo de
+                                                lectura ordenado</p>
+<div class="docs-meta">
+<span class="version-badge">Docs ~v1.0.0</span>
+<a class="github-link" href="https://github.com/OsintDeck/OsintDeck" rel="noopener noreferrer" target="_blank">
+<i data-feather="github"></i> Ver en GitHub
+                                                </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>Introducción y propósito</h2>
+<div class="docs-section-lead">
+<p><strong>Qué es este documento.</strong> Un manual lineal pensado para que cualquier persona
+                                con rol en el proyecto encuentre respuestas sin adivinar el orden: primero
+                                <em>instalación y publicación</em>, después <em>integraciones</em> (Google, Cloudflare,
+                                reportes), luego <em>por qué el software está construido así</em> (arquitectura y motor) y al
+                                final <em>referencia</em> (AJAX, cron, tablas). La sección
+                                <a href="#doc-reading-paths">Estructura del manual y recorridos</a> amplía esta lógica con
+                                tablas y rutas por rol.</p>
+</div>
+<p><strong>OSINT</strong> (Open Source Intelligence) designa el aprovechamiento metódico de
+                            información de fuentes abiertas y legalmente accesibles. <strong>OSINT Deck</strong> es un
+                            plugin de WordPress que implementa un <strong>panel centralizado (deck)</strong>: un único
+                            punto de interacción donde el analista ingresa datos, filtra el catálogo y abre herramientas
+                            externas con parámetros ya resueltos, reduciendo el costo de cambiar de contexto entre docenas de
+                            pestañas.</p>
+<p>Arquitectónicamente se comporta como un <strong>framework modular</strong> orientado a
+                            investigadores, periodistas y equipos de ciberseguridad: el núcleo orquesta detección de tipos de
+                            entrada, selección de herramientas, persistencia en base de datos y superficies de administración
+                            y front-end sin acoplar la lógica a un tema concreto de WordPress.</p>
+<p><strong>Contexto institucional.</strong> El desarrollo se enmarca en la
+                            <strong>Licenciatura en Ciberseguridad</strong> de la
+                            <strong>Universidad Nacional Raúl Scalabrini Ortiz (UNSO)</strong>, ubicada en San Isidro, Buenos Aires, Argentina, su sitio web es <a href="https://www.unso.edu.ar/" rel="noopener noreferrer" target="_blank"></a>https://www.unso.edu.ar/</a> y toma como
+                            referencia de dominio la experiencia del sitio
+                            <a href="https://osint.com.ar" rel="noopener noreferrer" target="_blank">OSINT.com.ar</a>.
+                            El software se distribuye bajo licencia libre; el cuerpo del manual prioriza implementación y
+                            operación en lenguaje claro, con detalle técnico donde hace falta.
+                        </p>
+<div class="callout tip">
+<i data-feather="compass"></i>
+<div>
+<strong>Enlaces útiles desde acá</strong>
+<ul style="margin: 0.5rem 0 0 1rem; line-height: 1.75;">
+<li><strong>Próximo paso lógico:</strong> <a href="#doc-reading-paths">Estructura del
+                                            manual y recorridos</a> (capas, tabla y rutas por rol).</li>
+<li><strong>Instalación:</strong> <a href="#install-updates">Requisitos y
+                                            actualizaciones</a>, <a href="#install-easy">ZIP sin terminal</a>,
+                                        <a href="#guia-rapida">Guía rápida</a>.</li>
+<li><strong>Turnstile (Cloudflare):</strong> <a href="#cloudflare-turnstile">Integración
+                                            paso a paso</a> — no exige proxy en todo el sitio.</li>
+<li><strong>Google y reportes:</strong> <a href="#auth-google">OAuth visitantes</a>,
+                                        <a href="#tool-reports">Bandera y cola en admin</a>.</li>
+<li><strong>Motor e IA:</strong> <a href="#naive-bayes">Naive Bayes</a> dentro del
+                                        <a href="#decision-engine">motor de decisiones</a>.</li>
+</ul>
+</div>
+</div>
+<div class="callout info">
+<i data-feather="info"></i>
+<div>
+<strong>Versión:</strong> contrastá la pastilla superior con
+                                <code>OSINT_DECK_VERSION</code> en <code>osint-deck.php</code> y con el repositorio
+                                <a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank">OsintDeck/OsintDeck</a>.
                             </div>
-                        </div>
-                    </div>
-                </div>
+</div>
+</section><section class="docs-section reveal" id="doc-reading-paths">
+<h2>Estructura del manual y recorridos de lectura</h2>
+<div class="docs-section-lead">
+<p><strong>En esta sección</strong> definimos la lógica de todo el sitio: qué tipo de información
+                                encontrás en cada parte y en qué orden conviene leer si querés <em>instalar</em>,
+                                <em>integrar servicios externos</em> o <em>entender el código</em>. Los botones
+                                <strong>Anterior / Siguiente</strong> del panel siguen la misma secuencia lineal.</p>
+</div>
+<h3>Cuatro capas de documentación</h3>
+<p>El manual mezcla propósitos distintos (modelo cercano a <a href="https://diataxis.fr/" rel="noopener" target="_blank">Diátaxis</a>): cada uno responde a una pregunta diferente.</p>
+<table class="docs-matrix">
+<thead>
+<tr>
+<th scope="col">Capa</th>
+<th scope="col">Pregunta que responde</th>
+<th scope="col">En este manual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Puesta en marcha</strong></td>
+<td>¿Cómo llevo el plugin a producción y lo publico en mi sitio?</td>
+<td>Desde <a href="#guia-rapida">Guía rápida</a> hasta <a href="#theme-ui">Tema y barra</a>
+                                        (instalación, escritorio, página pública, shortcodes).</td>
+</tr>
+<tr>
+<td><strong>Integración y operación</strong></td>
+<td>¿Cómo conecto Google, Turnstile, reportes, GitHub (issues al reparar) y métricas?</td>
+<td><a href="#auth-google">Google</a>, <a href="#tool-reports">Reportes</a>,
+                                        <a href="#github-issues-reparacion">GitHub e issues</a>,
+                                        <a href="#security-performance">Seguridad</a>, <a href="#validation">TLDs</a>,
+                                        <a href="#user-data">Historial</a>, <a href="#metrics-dashboard">Métricas</a>,
+                                        <a href="#admin">Administración</a>.</td>
+</tr>
+<tr>
+<td><strong>Explicación (conceptos)</strong></td>
+<td>¿Por qué está hecho así y cómo encajan las piezas?</td>
+<td><a href="#architecture">Arquitectura</a>, <a href="#decision-engine">Motor de
+                                            decisiones</a> (incluye <a href="#naive-bayes">Naive Bayes</a>).</td>
+</tr>
+<tr>
+<td><strong>Referencia técnica</strong></td>
+<td>¿Qué hook, acción AJAX o archivo toco para X?</td>
+<td><a href="#hooks">Cron</a>, <a href="#ajax">AJAX</a>, tablas densas y rutas de código.
+                                    </td>
+</tr>
+</tbody>
+</table>
+<h3>Recorridos por rol</h3>
+<div class="docs-path-grid">
+<article class="docs-path-card">
+<h4>Administrador del sitio</h4>
+<p class="docs-path-card__goal">Dejar el mazo publicado y estable.</p>
+<ol>
+<li><a href="#guia-rapida">Guía rápida</a> → panorama.</li>
+<li><a href="#wordpress-base">WordPress</a> → <a href="#install-easy">ZIP</a> →
+                                        <a href="#install-updates">Requisitos y actualizaciones</a>.</li>
+<li><a href="#uso-admin">Escritorio</a> → <a href="#uso-publico">Web pública</a> →
+                                        <a href="#shortcodes">Shortcodes</a>.</li>
+<li>Opcional: <a href="#auth-google">Google</a>, <a href="#cloudflare-turnstile">Turnstile</a>,
+                                        <a href="#tool-reports">Reportes</a>.</li>
+</ol>
+</article>
+<article class="docs-path-card">
+<h4>Integrador / seguridad</h4>
+<p class="docs-path-card__goal">Endurecer y conectar servicios externos.</p>
+<ol>
+<li><a href="#security-performance">Seguridad y rendimiento</a> (Turnstile, logs, AJAX).
+                                    </li>
+<li><a href="#auth-google">Google OAuth</a> y <a href="#validation">TLDs</a>.</li>
+<li><a href="#tool-reports">Flujo de reportes</a> y <a href="#user-data">datos de
+                                            visitantes</a>.</li>
+<li><a href="#github-issues-reparacion">GitHub: issues al marcar reparado</a>.</li>
+</ol>
+</article>
+<article class="docs-path-card">
+<h4>Desarrollador / mantenedor</h4>
+<p class="docs-path-card__goal">Leer código y extender el plugin.</p>
+<ol>
+<li><a href="#installation">Composer / WP-CLI</a> si trabajás desde el repo.</li>
+<li><a href="#architecture">Arquitectura</a> → <a href="#decision-engine">Decision
+                                            engine</a>.</li>
+<li><a href="#ajax">AJAX</a> + <a href="#hooks">Cron</a> como referencia rápida.</li>
+<li><a href="#docs-imagenes">Guía visual</a> si colaborás en el sitio de docs.</li>
+</ol>
+</article>
+</div>
+<div class="callout info">
+<i data-feather="book-open"></i>
+<div>
+<strong>Cómo usar el índice lateral:</strong> está agrupado con los mismos nombres que las
+                                capas anteriores. Si perdés el hilo, volvé a <a href="#intro">Introducción</a> o seguí el orden
+                                con <strong>Siguiente</strong> una vez por sección.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="guia-rapida">
+<h2>Guía rápida: ¿por dónde empiezo?</h2>
+<div class="docs-section-lead">
+<p><strong>En esta sección.</strong> Secuencia mínima para pasar de “no tengo nada” a “el mazo visible en una página”.
+<strong>Antes:</strong> leé <a href="#doc-reading-paths">Estructura del manual</a> si no sabés por dónde seguir.
+<strong>Después:</strong> <a href="#wordpress-base">Tener WordPress</a> → <a href="#install-easy">ZIP</a> →
+<a href="#uso-publico">Web pública</a>.</p>
+</div>
 
-                <section id="intro" class="reveal">
-                    <h2>Introducción</h2>
-                    <p>OSINT Deck es un plugin de WordPress diseñado para centralizar y organizar herramientas OSINT en
-                        un mazo dinámico. El sistema detecta automáticamente el tipo de dato ingresado y activa las
-                        herramientas correspondientes, permitiendo análisis rápidos, ordenados y reproducibles en un
-                        entorno unificado.</p>
-
-                    <div class="callout info">
-                        <i data-feather="info"></i>
-                        <div>
-                            <strong>Nota:</strong> Esta documentación describe el estado actual del plugin (versión 1.0)
-                            en la rama principal del repositorio. Cuando se publiquen nuevas versiones estables, esta
-                            página se actualizará con los cambios correspondientes.
-                        </div>
-                    </div>
-                </section>
-
-                <section id="about" class="reveal">
-                    <h2>Sobre el Proyecto</h2>
-                    <p>OSINT Deck nace como una iniciativa del equipo de <a href="https://osint.com.ar" target="_blank"
-                            rel="noopener noreferrer">OSINT.com.ar</a>, un blog especializado en inteligencia de fuentes
-                        abiertas y ciberseguridad. La herramienta fue desarrollada para optimizar los flujos de trabajo
-                        de investigación que utilizamos diariamente en nuestras publicaciones y análisis.</p>
-
-                    <div class="callout tip">
-                        <i data-feather="globe"></i>
-                        <div>
-                            <strong>Mantente actualizado:</strong> Visita <a href="https://osint.com.ar" target="_blank"
-                                rel="noopener noreferrer">osint.com.ar</a> para leer artículos sobre técnicas OSINT,
-                            herramientas, casos de estudio y las últimas novedades en ciberseguridad.
-                        </div>
-                    </div>
-                </section>
-
-                <section id="features" class="reveal">
-                    <h2>Características Principales</h2>
-
-                    <h3>Detección automática del tipo de dato</h3>
-                    <p>El plugin identifica automáticamente el contenido ingresado, soportando:</p>
-                    <ul>
-                        <li>Email, Dominio / subdominio, URL, IP v4 / v6</li>
-                        <li>ASN, MAC, UUID, Hashes (MD5, SHA1, SHA256)</li>
-                        <li>Teléfonos, Coordenadas, Wallets BTC / ETH</li>
-                        <li>Claves PGP, Archivos conocidos, Username / alias</li>
-                        <li>Nombre completo, ZIP / Código postal, Paquetes com.*.*</li>
-                    </ul>
-
-                    <h3>Mazo dinámico de herramientas</h3>
-                    <ul>
-                        <li>Cartas individuales por herramienta</li>
-                        <li>Botón principal "Analizar {input}"</li>
-                        <li>Acciones extra: copiar, abrir, compartir</li>
-                        <li>Filtros por categoría, licencia y tipo de acceso</li>
-                        <li>Badges automáticos: Nueva, Popular, Reportada, Recomendada</li>
-                    </ul>
-
-                    <h3>Métricas internas</h3>
-                    <p>Las métricas se generan diariamente y se almacenan en <code>osd_tool_metrics</code>. Incluyen
-                        <code>clicks_7d</code>, <code>reports_7d</code>, <code>created_at</code>,
-                        <code>last_input_type</code>.
-                    </p>
-                </section>
-
-                <section id="shortcode" class="reveal">
-                    <h2>Shortcode</h2>
-                    <p>Implementa el mazo en cualquier página o entrada:</p>
-                    <div class="code-block-wrapper">
-                        <pre class="line-numbers"><code class="language-php">[osint_deck]
-[osint_deck category="dominios" access="gratuito" limit="20"]</code></pre>
-                        <button class="copy-btn" data-clipboard-target="code">Copiar</button>
-                    </div>
-
-                    <p><strong>Parámetros disponibles:</strong></p>
-                    <ul>
-                        <li><code>category</code>: filtra por categoría de herramienta (ej. "dominios", "red").</li>
-                        <li><code>access</code>: tipo de acceso (ej. "gratuito", "registro", "pago").</li>
-                        <li><code>limit</code>: cantidad inicial de resultados (por defecto 20).</li>
-                    </ul>
-
-                    <div class="callout tip">
-                        <i data-feather="zap"></i>
-                        <div>
-                            <strong>Tip:</strong> Puedes combinar múltiples parámetros para crear vistas personalizadas
-                            del mazo según tus necesidades.
-                        </div>
-                    </div>
-                </section>
-
-                <section id="installation" class="reveal">
-                    <h2>Instalación</h2>
-
-                    <h3>Instalación manual</h3>
-                    <ol>
-                        <li>Descargar el repositorio desde GitHub.</li>
-                        <li>Copiar la carpeta del plugin dentro de: <code>wp-content/plugins/osint-deck</code></li>
-                        <li>En el panel de WordPress ir a: <strong>Plugins → OSINT Deck → Activar</strong>.</li>
-                    </ol>
-                    <p><em>(Opcional) Importar herramientas usando los JSON de
-                            <code>template-de-herramientas/*.json</code>.</em></p>
-
-                    <h3>Vía WP-CLI</h3>
-                    <div class="code-block-wrapper">
-                        <pre class="line-numbers"><code class="language-bash">wp plugin activate osint-deck</code></pre>
-                        <button class="copy-btn" data-clipboard-target="code">Copiar</button>
-                    </div>
-
-                    <div class="callout warning">
-                        <i data-feather="alert-triangle"></i>
-                        <div>
-                            <strong>Importante:</strong> Asegúrate de tener WordPress 6.4+ y PHP 8.0+ antes de instalar
-                            el plugin.
-                        </div>
-                    </div>
-                </section>
-
-                <section id="validation" class="reveal">
-                    <h2>Validación de dominios y TLDs</h2>
-                    <ul>
-                        <li>Lista IANA local en <code>assets/data/tlds-alpha-by-domain.txt</code>.</li>
-                        <li>Tarea semanal: <code>osd_refresh_tlds_weekly</code>.</li>
-                        <li>Validación offline mediante <code>osd_is_valid_domain()</code> (sin llamadas externas para
-                            proteger la privacidad).</li>
-                    </ul>
-                </section>
-
-                <section id="rate-limiting" class="reveal">
-                    <h2>Rate limiting</h2>
-                    <p>Implementado en <code>osd_user_event</code> para prevenir abusos:</p>
-                    <ul>
-                        <li>60 acciones por minuto por IP.</li>
-                        <li>1 reporte por herramienta por día.</li>
-                        <li>Respuestas JSON consistentes (códigos como <code>rate_limited</code>,
-                            <code>report_limit</code>).
-                        </li>
-                    </ul>
-                </section>
-
-                <section id="admin" class="reveal">
-                    <h2>Administración</h2>
-                    <p>Funcionalidades del panel de administración:</p>
-                    <ul>
-                        <li>Configuración de límites y opciones de seguridad.</li>
-                        <li>CRUD (Crear, Leer, Actualizar, Borrar) de herramientas.</li>
-                        <li>Importación y exportación en formato JSON.</li>
-                        <li>Logs de usuario y logs administrativos.</li>
-                        <li>Métricas resumidas por herramienta.</li>
-                    </ul>
-                </section>
-
-                <section id="hooks" class="reveal">
-                    <h2>Hooks y tareas programadas</h2>
-                    <h3>Cron jobs principales</h3>
-                    <ul>
-                        <li><code>osd_metrics_daily</code>: Generación de estadísticas diarias.</li>
-                        <li><code>osd_refresh_tlds_weekly</code>: Actualización de la lista de TLDs.</li>
-                    </ul>
-                </section>
-
-                <section id="ajax" class="reveal">
-                    <h2>AJAX</h2>
-                    <h3>Públicos</h3>
-                    <ul>
-                        <li><code>osd_user_event</code>: Registro de interacciones.</li>
-                        <li><code>osd_check_tld</code>: Validación asíncrona.</li>
-                    </ul>
-                    <h3>Administrativos</h3>
-                    <ul>
-                        <li><code>osd_metrics_summary</code></li>
-                        <li><code>osd_tools_*</code></li>
-                        <li><code>osd_logs_*</code></li>
-                    </ul>
-                </section>
-
-                <section id="roadmap" class="reveal">
-                    <h2>Roadmap inicial</h2>
-                    <ul>
-                        <li>[ ] Soporte para nuevos tipos de input avanzados.</li>
-                        <li>[ ] Exportación de mazos personalizados.</li>
-                        <li>[ ] Dashboard ampliado con comparativas de métricas.</li>
-                        <li>[ ] Integración con fuentes externas OSINT.</li>
-                        <li>[ ] Publicación en WordPress Plugin Directory.</li>
-                    </ul>
-                </section>
-                <section id="acknowledgments" class="reveal">
-                    <h2>Agradecimientos</h2>
-
-                    <div class="callout info">
-                        <i data-feather="award"></i>
-                        <div>
-                            <strong>Proyecto Académico:</strong> OSINT Deck fue desarrollado como parte de la
-                            Licenciatura en Ciberseguridad de la <strong>Universidad Nacional Raúl Scalabrini
-                                Ortiz</strong>, San Isidro, Buenos Aires, Argentina.
-                        </div>
-                    </div>
-
-                    <h3>Autoridades</h3>
-                    <p>
-                        Agradecemos profundamente a las autoridades de la universidad por su apoyo y visión:
-                    </p>
-
-                    <!-- Contenedor dinámico para autoridades (renderizado por acknowledgments.js) -->
-                    <div id="authorities-grid" class="ack-grid"></div>
-
-                    <h3>Cuerpo Docente</h3>
-                    <p>
-                        Este proyecto no habría sido posible sin la dedicación, conocimiento y guía de nuestros
-                        profesores:
-                    </p>
-
-                    <!-- Contenedor dinámico para docentes (renderizado por acknowledgments.js) -->
-                    <div id="professors-grid" class="ack-grid ack-grid-professors"></div>
-
-                    <h3>Comunidad y Colaboración</h3>
-                    <p>
-                        Agradecemos también a la comunidad de
-                        <a href="https://osint.com.ar" target="_blank" rel="noopener noreferrer">OSINT.com.ar</a>,
-                        cuyo trabajo y dedicación en el campo de la inteligencia de fuentes abiertas inspiró y dio
-                        contexto a este proyecto.
-                    </p>
-
-                    <div class="callout tip" style="margin-top: 30px;">
-                        <i data-feather="heart"></i>
-                        <div>
-                            <strong>Gratitud:</strong> Este proyecto es el resultado del esfuerzo conjunto de
-                            estudiantes, docentes y la comunidad OSINT. Gracias a todos los que hicieron posible este
-                            trabajo.
-                        </div>
-                    </div>
-                </section>
-
-
-
-                <section id="authors" class="reveal">
-                    <h2>Autores</h2>
-                    <p>Equipo de desarrollo:</p>
-                    <ul>
-                        <li>Sebastián Cendra</li>
-                        <li>Claudio Pandelo</li>
-                        <li>Paolo Peña Ramírez</li>
-                        <li>Guillermo Quintana</li>
-                        <li>Damián Radiminsky</li>
-                    </ul>
-                </section>
-            </main>
-        </div>
+<p>Si nunca instalaste un plugin o WordPress te suena nuevo, seguí esta lista en orden:</p>
+<ol style="list-style: decimal; margin-left: 1.25rem; line-height: 1.8;">
+<li><strong>WordPress funcionando:</strong> tu sitio ya debe estar instalado (hosting local
+                                o en Internet). Si no, leé la sección <a href="#wordpress-base">Tener WordPress
+                                    instalado</a>.</li>
+<li><strong>Subir OSINT Deck:</strong> con un archivo ZIP del plugin, desde el escritorio de
+                                WordPress. Los pasos detallados están en <a href="#install-easy">Instalar el plugin
+                                    (modo fácil)</a>.</li>
+<li><strong>Activar el plugin:</strong> un clic en <strong>Activar</strong>. Si algo falla,
+                                WordPress suele mostrar un mensaje en rojo: copialo tal cual para soporte.</li>
+<li><strong>Poner el mazo en una página:</strong> editás una página o entrada y pegás el
+                                shortcode <code>[osint_deck]</code> (o <code>[osint_deck_search]</code>). Guardás y
+                                visitás la página: debería aparecer la barra de búsqueda del mazo.</li>
+<li><strong>Configurar (opcional):</strong> en el menú lateral izquierdo del escritorio:
+                                <strong>OSINT Deck</strong> → distintas secciones según lo que quieras ajustar (textos,
+                                tema, herramientas, etc.).</li>
+</ol>
+<div class="callout tip">
+<i data-feather="zap"></i>
+<div>
+<strong>Tip:</strong> Descargá siempre el ZIP desde las <strong>Releases</strong> de
+                                GitHub (incluye la carpeta <code>vendor/</code> lista para usar). Así no necesitás
+                                Composer en el servidor.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="wordpress-base">
+<h2>Tener WordPress instalado (antes del plugin)</h2>
+<p>OSINT Deck es un <strong>plugin</strong>: vive <em>dentro</em> de un sitio WordPress. No
+                            reemplaza a WordPress ni se instala “solo”: primero tenés que tener WordPress en marcha
+                            (base de datos, archivos en el servidor, acceso al escritorio <code>/wp-admin</code>).</p>
+<h3>Documentación oficial de WordPress (inglés)</h3>
+<p>WordPress.org mantiene la referencia estándar. Enlaces útiles:</p>
+<ul style="list-style: disc; margin-left: 1.25rem; line-height: 1.8;">
+<li><a href="https://wordpress.org/documentation/article/before-you-install/" rel="noopener" target="_blank">Before you install WordPress</a> — requisitos (PHP,
+                                base de datos, servidor).</li>
+<li><a href="https://wordpress.org/documentation/article/how-to-install-wordpress/" rel="noopener" target="_blank">How to install WordPress</a> — proceso paso a paso.
+                            </li>
+<li><a href="https://wordpress.org/documentation/article/managing-plugins/" rel="noopener" target="_blank">Managing Plugins</a> — incluye cómo <strong>subir un plugin en
+                                    ZIP</strong>.</li>
+<li><a href="https://wordpress.org/documentation/article/administration-screens/" rel="noopener" target="_blank">Administration Screens</a> — mapa del escritorio
+                                (menús, entradas, páginas, ajustes).</li>
+</ul>
+<h3>Documentación en español</h3>
+<p>Portada de documentación en español: <a href="https://wordpress.org/documentation/es/" rel="noopener" target="_blank">wordpress.org/documentation/es/</a> (buscá allí
+                            instalación, plugins, etc.).</p>
+<div class="callout info">
+<i data-feather="info"></i>
+<div>
+<strong>Muchas personas no instalan WordPress “a mano”:</strong> usan el panel del
+                                hosting (cPanel, Plesk, “Instalar WordPress en 1 clic”). Eso también vale: lo importante
+                                es que podás entrar al escritorio como administrador y subir plugins.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="install-easy">
+<h2>Instalar OSINT Deck (modo fácil, sin terminal)</h2>
+<p>Estos pasos son para quien ya tiene WordPress y sólo quiere añadir el plugin.</p>
+<h3>1. Conseguir el archivo ZIP del plugin</h3>
+<ul style="list-style: disc; margin-left: 1.25rem;">
+<li>Entrá al repositorio del proyecto en GitHub: <a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank">OsintDeck/OsintDeck</a>.</li>
+<li>Abrí <strong>Releases</strong> y descargá el último ZIP publicado (nombre similar a
+                                <code>osint-deck-vX.Y.Z.zip</code>). Ese paquete está pensado para instalarse en
+                                WordPress e incluye las dependencias PHP (<code>vendor/</code>).</li>
+<li><strong>No descomprimas</strong> el ZIP en tu PC para subir carpeta por carpeta:
+                                WordPress espera un único archivo <code>.zip</code> en el paso de subida.</li>
+</ul>
+<figure class="docs-figure" id="fig-github-releases">
+    <div class="docs-figure__slot" aria-label="Captura: releases en GitHub">
+        <span class="docs-figure__id">Fig. 1</span>
+        <img src="assets/img/docs/fig-01-releases-github.png" 
+             alt="Página de Releases del repositorio OsintDeck con el paquete ZIP de la versión v1.0.0" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
     </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Repositorio oficial:</strong> Sección de <strong>Releases</strong> en 
+        <a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank">OsintDeck/OsintDeck</a>. 
+        Para una instalación estable, se debe descargar el archivo <code>osint-deck-vX.Y.Z.zip</code> (Asset), 
+        el cual contiene el núcleo del plugin y las dependencias de Composer ya procesadas.
+    </figcaption>
+</figure>
+<h3>2. Subir el plugin desde WordPress</h3>
+<ol style="list-style: decimal; margin-left: 1.25rem; line-height: 1.85;">
+<li>Iniciá sesión en el escritorio: normalmente
+                                <code>https://tu-dominio.com/wp-admin</code>.</li>
+<li>Menú izquierdo: <strong>Plugins</strong> → <strong>Añadir nuevo plugin</strong>.</li>
+<li>Pulsá el botón <strong>Subir plugin</strong> (arriba).</li>
+<li>Elegí el archivo ZIP y pulsá <strong>Instalar ahora</strong>.</li>
+<li>Cuando termine, pulsá <strong>Activar plugin</strong>.</li>
+</ol>
+<p>(Guía genérica equivalente en WordPress.org: <a href="https://wordpress.org/documentation/article/managing-plugins/" rel="noopener" target="_blank">Managing Plugins</a>, sección sobre subir plugins.)</p>
+<figure class="docs-figure" id="fig-wp-upload-plugin">
+    <div class="docs-figure__slot" aria-label="Captura: subir plugin WordPress">
+        <span class="docs-figure__id">Fig. 2</span>
+        <img src="assets/img/docs/fig-02-wp-upload-plugin.png" 
+             alt="Interfaz de WordPress para la subida del archivo ZIP de OSINT Deck" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Instalación:</strong> Panel de <strong>Plugins → Añadir nuevo plugin</strong>. Se debe utilizar el botón 
+        <strong>Subir plugin</strong> para cargar el archivo <code>.zip</code> oficial descargado previamente.
+    </figcaption>
+</figure>
+<h3>3. Comprobar que quedó bien</h3>
+<ul style="list-style: disc; margin-left: 1.25rem;">
+<li>En <strong>Plugins</strong> → <strong>Plugins instalados</strong> deberías ver
+                                <strong>OSINT Deck</strong> como activo.</li>
+<li>En el menú lateral debería aparecer una entrada <strong>OSINT Deck</strong>.</li>
+</ul>
+<figure class="docs-figure" id="fig-wp-plugins-active">
+    <div class="docs-figure__slot" aria-label="Captura: plugin activo">
+        <span class="docs-figure__id">Fig. 3</span>
+        <img src="assets/img/docs/fig-03-plugin-activo.png" 
+             alt="Listado de plugins de WordPress mostrando OSINT Deck en estado activo" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Verificación:</strong> Vista de la pantalla <strong>Plugins → Plugins instalados</strong>. 
+        Una vez activado correctamente, la fila de <strong>OSINT Deck</strong> aparecerá resaltada y se habilitará 
+        el acceso al panel de control en el menú lateral del escritorio.
+    </figcaption>
+</figure>
+<h3>4. Mostrar el mazo en el sitio</h3>
+<ol style="list-style: decimal; margin-left: 1.25rem; line-height: 1.85;">
+<li><strong>Páginas</strong> o <strong>Entradas</strong> → <strong>Añadir nueva</strong> (o
+                                editá una existente).</li>
+<li>En el contenido pegá: <code>[osint_deck]</code> o <code>[osint_deck_search]</code>
+                                (ambos muestran el buscador del mazo).</li>
+<li>Publicá o actualizá la página y abrila: deberías ver la interfaz del mazo.</li>
+</ol>
+<figure class="docs-figure" id="fig-editor-shortcode">
+    <div class="docs-figure__slot" aria-label="Captura: editor con shortcode">
+        <span class="docs-figure__id">Fig. 4</span>
+        <img src="assets/img/docs/fig-04-editor-shortcode.png" 
+             alt="Implementación del shortcode [osint_deck] en el editor de contenido" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Implementación:</strong> El mazo se despliega insertando el shortcode <code>[osint_deck]</code>. 
+        Aunque la captura muestra su uso en <strong>Elementor</strong>, el plugin es agnóstico al editor: 
+        puede utilizarse en bloques de texto, widgets de shortcode o en el editor clásico de WordPress sin impedimentos técnicos.
+    </figcaption>
+</figure>
+<div class="callout warning">
+<i data-feather="alert-triangle"></i>
+<div>
+<strong>Si al activar aparece un error de “autoload” o “vendor”:</strong> el ZIP no era
+                                el de release completo o se subió una carpeta sin dependencias. Volvé a descargar el ZIP
+                                de <strong>Releases</strong> o usá un paquete construido con
+                                <code>composer install --no-dev</code>.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="install-updates">
+<h2>Instalación y actualizaciones</h2>
+<div class="docs-section-lead">
+<p><strong>En esta sección.</strong> Requisitos de servidor, Composer, ZIP con <code>vendor/</code> y actualizaciones remotas.
+<strong>Audiencia:</strong> quien despliega el plugin (administrador o DevOps).
+<strong>Después:</strong> <a href="#installation">Composer / WP-CLI</a> si trabajás desde el código, o saltá a
+<a href="#uso-admin">Escritorio WP</a> si ya instalaste.</p>
+</div>
 
-    <button id="back-to-top" title="Volver arriba">
-        <i data-feather="arrow-up"></i>
-    </button>
+<p style="font-size: 1.05rem; line-height: 1.7; color: rgba(226, 232, 240, 0.95);"><strong>En la
+                                práctica:</strong> descargá el <strong>ZIP de una release</strong> del repo
+                            <a href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener" target="_blank">OsintDeck/OsintDeck</a>
+                            (debe incluir la carpeta <code>vendor/</code>). En wp-admin andá a
+                            <strong>Plugins → Añadir nuevo → Subir plugin</strong>, elegí el ZIP, instalá y
+                            <strong>Activá</strong>. Para una guía con más detalle y capturas, usá
+                            <a href="#install-easy">Instalar el plugin (modo fácil)</a> o la
+                            <a href="#guia-rapida">Guía rápida</a>. Si desarrollás el código: cloná el repositorio y ejecutá
+                            <code>composer install</code> antes de empaquetar o subir por FTP (véase
+                            <a href="#installation">Composer y WP-CLI</a>).</p>
+<h3 id="requirements">Requisitos de runtime</h3>
+<p>Valores declarados en la cabecera del plugin (<code>osint-deck.php</code>):</p>
+<ul>
+<li><strong>WordPress:</strong> 5.8 o superior (<code>Requires at least</code>). Las ramas
+                                6.x
+                                actuales son el entorno objetivo en producción.</li>
+<li><strong>PHP:</strong> 7.4+ (<code>Requires PHP</code>); se recomienda 8.x alineado al
+                                soporte del hosting.</li>
+<li><strong>Base de datos:</strong> la misma instancia MySQL/MariaDB del sitio; el plugin
+                                crea
+                                tablas propias en la activación y migraciones versionadas.</li>
+<li><strong>Composer:</strong> obligatorio en el <em>workspace de desarrollo</em> para
+                                generar
+                                <code>vendor/</code>. Los <strong>ZIP de GitHub Releases</strong> deben incluir
+                                <code>vendor/autoload.php</code> para instalación sin CLI en el servidor.
+                            </li>
+<li><strong>Cliente:</strong> navegador actual (ES6+, fetch/AJAX).</li>
+</ul>
+<div class="callout warning">
+<i data-feather="alert-triangle"></i>
+<div>
+                                Sin <code>vendor/autoload.php</code> el bootstrap fallará. Reinstalá desde el release o
+                                ejecutá
+                                <code>composer install --no-dev --optimize-autoloader</code> antes de empaquetar.
+                            </div>
+</div>
+<h3>Flujos de despliegue</h3>
+<ul style="list-style: disc; margin-left: 1.25rem; line-height: 1.85;">
+<li><strong>Operaciones:</strong> subida ZIP vía wp-admin — <a href="#install-easy">Instalación paso a paso</a>.</li>
+<li><strong>Desarrollo / CI:</strong> clon del repo + Composer — <a href="#installation">Composer y WP-CLI</a>.</li>
+</ul>
+<h3>Actualizaciones remotas (Plugin Update Checker)</h3>
+<p>El bootstrap registra
+                            <a href="https://github.com/YahnisElsts/plugin-update-checker" rel="noopener" target="_blank">plugin-update-checker</a>
+                            contra <code>https://github.com/OsintDeck/OsintDeck</code>. Los tags y el header
+                            <code>Version</code> deben alinearse. Desactivación global:
+                        </p>
+<div class="code-block-wrapper">
+<pre class="line-numbers"><code class="language-php">define( 'OSINT_DECK_DISABLE_REMOTE_UPDATES', true );</code></pre>
+<button class="copy-btn" data-clipboard-target="code">Copiar</button>
+</div>
+<p>Publicar el ZIP como asset en cada release mejora la experiencia de actualización en el
+                            escritorio.</p>
+<figure class="docs-figure" id="fig-update-checker">
+    <div class="docs-figure__slot" aria-label="Captura: actualización en escritorio WP">
+        <span class="docs-figure__id">Fig. 5</span>
+        <img src="assets/img/docs/fig-05-actualizacion-escritorio.png" 
+             alt="Aviso de actualización de OSINT Deck en el escritorio de WordPress vía GitHub" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Mantenimiento:</strong> Interfaz de actualización automática. Gracias a la integración con 
+        <code>plugin-update-checker</code>, el sistema detecta nuevas versiones en el repositorio oficial y permite 
+        actualizar el mazo con un solo clic desde el escritorio de WordPress.
+    </figcaption>
+</figure>
+</section><section class="docs-section reveal" id="installation">
+<h2>Instalación para desarrollo o servidores sin ZIP</h2>
+<p>Si ya seguiste la <a href="#install-easy">guía fácil</a>, podés saltar esta sección. Acá se
+                            describe copiar el código desde GitHub y usar Composer en tu entorno (no en el hosting si no
+                            podés).</p>
+<h3>Instalación manual (carpeta + Composer)</h3>
+<ol>
+<li>Clonar o descargar desde <a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank">OsintDeck/OsintDeck</a>.</li>
+<li><code>composer install</code> dentro de la carpeta del plugin.</li>
+<li>Copiar a <code>wp-content/plugins/osint-deck</code>.</li>
+<li><strong>Plugins → OSINT Deck → Activar</strong> (se aplican migraciones de base de
+                                datos).</li>
+</ol>
+<p><em>Opcional:</em> importar plantillas JSON o datos desde el panel.</p>
+<h3>Vía WP-CLI</h3>
+<div class="code-block-wrapper">
+<pre class="line-numbers"><code class="language-bash">wp plugin activate osint-deck</code></pre>
+<button class="copy-btn" data-clipboard-target="code">Copiar</button>
+</div>
+<div class="callout warning">
+<i data-feather="alert-triangle"></i>
+<div>
+<strong>Importante:</strong> Sin <code>vendor/autoload.php</code> el plugin registrará
+                                error. Revisá permisos de escritura para iconos y cachés.
+                            </div>
+</div>
+<p>Actualizaciones vía GitHub y constante de desactivación: véase
+                            <a href="#install-updates">Instalación y actualizaciones</a>.
+                        </p>
+</section><section class="docs-section reveal" id="uso-admin">
+<h2>Qué puede hacer un administrador (escritorio WordPress)</h2>
+<p>Todo esto está en el menú <strong>OSINT Deck</strong> del escritorio (submenús según la
+                            versión: herramientas, ajustes, métricas, etc.).</p>
+<h3>Tareas habituales</h3>
+<ul style="list-style: disc; margin-left: 1.25rem; line-height: 1.85;">
+<li><strong>Gestionar herramientas del mazo:</strong> alta, edición o borrado;
+                                importar/exportar JSON; categorías e iconos.</li>
+<li><strong>Ajustes generales y diseño:</strong> tema claro/oscuro, barra fija, textos de
+                                tarjetas de ayuda, crisis o comunidad.</li>
+<li><strong>Dominios y TLDs:</strong> lista de sufijos válidos y TLDs personalizados.</li>
+<li><strong>Seguridad y autenticación:</strong> Turnstile, OAuth Google para visitantes.
+                            </li>
+<li><strong>Métricas:</strong> uso agregado para ver qué herramientas se usan más.</li>
+<li><strong>Logs y soporte:</strong> diagnóstico y mantenimiento según opciones del plugin.
+                            </li>
+</ul>
+<figure class="docs-figure" id="fig-wp-menu-osint">
+    <div class="docs-figure__slot" aria-label="Captura: menú wp-admin OSINT Deck">
+        <span class="docs-figure__id">Fig. 6</span>
+        <img src="assets/img/docs/fig-06-menu-wp-admin.png" 
+             alt="Menú lateral de administración de OSINT Deck en WordPress" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Navegación:</strong> Ubicación de <strong>OSINT Deck</strong> en el menú lateral del escritorio de WordPress. 
+        Desde aquí se accede a las secciones de gestión de herramientas, ajustes globales, métricas de uso y el sistema de reportes.
+    </figcaption>
+</figure>
+<div class="callout info">
+<i data-feather="info"></i>
+<div>
+<strong>Permisos:</strong> suelen ver estas pantallas los usuarios con rol de
+                                administrador (o quien pueda gestionar plugins). Los visitantes del sitio público no.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="uso-publico">
+<h2>Qué puede hacer un visitante en el mazo (web pública)</h2>
+<p>Estas acciones están en la página donde insertaste el shortcode. No hace falta ser
+                            administrador de WordPress.</p>
+<ul style="list-style: disc; margin-left: 1.25rem; line-height: 1.85;">
+<li><strong>Escribir o pegar en la barra:</strong> el texto se analiza y el mazo muestra
+                                herramientas acordes al tipo de dato detectado (dominio, IP, correo, etc.).</li>
+<li><strong>Filtrar herramientas:</strong> categorías, tipo de acceso, licencia — reducen la
+                                lista en vivo.</li>
+<li><strong>Abrir una herramienta:</strong> enlaces principales o vista embebida cuando el
+                                sitio lo permite.</li>
+<li><strong>Copiar o pegar desde el portapapeles:</strong> según los botones que muestre tu
+                                versión junto a la barra.</li>
+<li><strong>Favoritos o “me gusta”</strong> (si está habilitado): puede pedirse inicio de
+                                sesión con Google si tu sitio lo configuró.</li>
+<li><strong>Inicio de sesión con Google:</strong> si el administrador activó SSO, permite
+                                sesión propia del plugin (favoritos, historial, etc.) sin usar cuentas de edición del
+                                sitio.</li>
+<li><strong>Reportar un problema</strong> en una herramienta: según configuración y
+                                protección anti-abuso (p. ej. Turnstile).</li>
+<li><strong>Ayuda, comunidad o avisos:</strong> textos y enlaces que el administrador define
+                                en el panel del plugin.</li>
+</ul>
+<figure class="docs-figure" id="fig-public-deck">
+    <div class="docs-figure__slot" aria-label="Captura: mazo público">
+        <span class="docs-figure__id">Fig. 7</span>
+        <img src="assets/img/docs/fig-07-mazo-publico.png" 
+             alt="Interfaz pública de OSINT Deck mostrando la barra de búsqueda inteligente" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Interfaz de Usuario:</strong> Vista del mazo en la web pública. La barra de búsqueda central permite el ingreso de indicadores (IoCs) para su análisis automático por el motor de decisiones.
+    </figcaption>
+</figure>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2025 OSINT Deck. Licencia MIT.</p>
-                <div class="footer-links">
-                    <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
-                    <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
-                    <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
-                    <a href="https://github.com/OsintDeck/OsintDeck"><i data-feather="github"></i> GitHub</a>
-                    <a href="#"><i data-feather="arrow-up"></i> Arriba</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+<figure class="docs-figure" id="fig-public-filters">
+    <div class="docs-figure__slot" aria-label="Captura: filtros y cartas">
+        <span class="docs-figure__id">Fig. 8</span>
+        <img src="assets/img/docs/fig-08-filtros-cartas.png" 
+             alt="Resultados de búsqueda en OSINT Deck con filtros activos y cartas de herramientas" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Exploración:</strong> Una vez procesado el dato, el sistema despliega las cartas de herramientas pertinentes. Los analistas pueden refinar los resultados utilizando los filtros de categoría, tipo de acceso y licencia.
+    </figcaption>
+</figure>
+</section><section class="docs-section reveal" id="shortcodes">
+<h2>Shortcodes</h2>
+<h3><code>[osint_deck]</code> y <code>[osint_deck_search]</code></h3>
+<p>Renderizan el buscador / mazo. El nombre <code>osint_deck</code> se mantiene por
+                            compatibilidad.</p>
+<div class="code-block-wrapper">
+<pre class="line-numbers"><code class="language-php">[osint_deck_search]
+[osint_deck]
+[osint_deck category="dominios" access="gratuito" limit="20"]</code></pre>
+<button class="copy-btn" data-clipboard-target="code">Copiar</button>
+</div>
+<p><strong>Atributos:</strong> <code>category</code> (nombre o código), <code>access</code>
+                            (valor en metadatos), <code>limit</code> (si es &gt; 0 recorta la lista; <code>-1</code> sin
+                            límite).</p>
+<h3><code>[osint_deck_cards]</code></h3>
+<p>Rejilla estática de herramientas.</p>
+<div class="code-block-wrapper">
+<pre class="line-numbers"><code class="language-php">[osint_deck_cards category="dns" limit="10" orderby="clicks" order="DESC"]</code></pre>
+<button class="copy-btn" data-clipboard-target="code">Copiar</button>
+</div>
+<p><strong>Atributos:</strong> <code>category</code>, <code>tag</code>, <code>limit</code>,
+                            <code>orderby</code> (<code>title</code> | <code>clicks</code>), <code>order</code>
+                            (<code>ASC</code>|<code>DESC</code>).</p>
+<div class="callout tip">
+<i data-feather="zap"></i>
+<div>
+<strong>Tip:</strong> Usa <code>osint_deck_cards</code> cuando solo quieras listar
+                                herramientas sin el buscador completo.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="theme-ui">
+<h2>Tema y barra de búsqueda</h2>
+<p>El aspecto del mazo (claro / oscuro / según sistema) y el comportamiento de la barra se
+                            controlan desde <strong>OSINT Deck → Ajustes</strong>, pestañas de diseño o general según tu
+                            versión.</p>
+<ul>
+<li><strong>Tema:</strong> modo automático (preferencia del sistema del visitante) o fijo; a
+                                veces hay selector en el DOM del tema (<code>data-site-skin</code>, clases en
+                                <code>&lt;html&gt;</code>, etc.) para alinear con tu plantilla.</li>
+<li><strong>Barra fija:</strong> opción para mantener la barra de búsqueda visible al hacer
+                                scroll; puede incluir offset en píxeles para no tapar el header del tema.</li>
+<li><strong>Caché de assets:</strong> CSS y JS se etiquetan con
+                                <code>OSINT_DECK_VERSION</code> para forzar recarga al actualizar el plugin.</li>
+</ul>
+<div class="callout info">
+<i data-feather="info"></i>
+<div>
+<strong>Plantillas:</strong> si la barra queda debajo del menú del tema, probá el offset
+                                o la opción de barra fija; cada tema tiene alturas distintas de cabecera.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="auth-google">
+<h2>Inicio de sesión con Google</h2>
+<div class="docs-section-lead">
+<p><strong>En esta sección.</strong> OAuth de Google para visitantes del mazo (no usuarios wp-admin), flujo de token y datos
+guardados en tablas del plugin.
+<strong>Antes:</strong> <a href="#security-performance">Turnstile</a> si lo tenés activo (afecta el login AJAX).
+<strong>Después:</strong> <a href="#user-data">Historial y favoritos</a>.</p>
+</div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/acknowledgments.js"></script>
+<p>Opcional en <strong>OSINT Deck → Ajustes → Integraciones y Seguridad</strong> (misma pestaña que Turnstile y GitHub).
+                            Permite que
+                            <strong>visitantes del front</strong> (no administradores del escritorio WP) tengan una
+                            identidad estable para funciones del mazo sin crearles usuario WordPress.</p>
+<h3 id="por-que-google">¿Por qué integrar Google?</h3>
+<p>El mazo funciona sin login: búsqueda y catálogo son públicos. La integración OAuth aporta valor
+                            cuando querés:</p>
+<ul style="list-style: disc; margin-left: 1.25rem; line-height: 1.85;">
+<li><strong>Favoritos y “me gusta” persistentes</strong> entre dispositivos, ligados a una cuenta
+                                en lugar de solo al navegador.</li>
+<li><strong>Historial de actividad</strong> asociado al perfil del deck (tablas propias del
+                                plugin).</li>
+<li><strong>Reportes con comentario</strong>: un visitante anónimo puede marcar una herramienta
+                                rota; si inicia sesión, puede añadir un mensaje al reporte (política implementada en
+                                <code>UserEvents</code> / <code>ToolReports</code>).</li>
+<li><strong>Borrado de cuenta y datos</strong> coherentes con RGPD/privacidad sin tocar
+                                <code>wp_users</code>.</li>
+</ul>
+<p>Los perfiles viven en tablas del plugin (<code>DeckUsers</code> y relacionadas), no reemplazan al
+                            sistema de usuarios de WordPress para administración del sitio.</p>
+<h3>Flujo técnico resumido</h3>
+<ol style="list-style: decimal; margin-left: 1.25rem; line-height: 1.85;">
+<li>El visitante pulsa el botón de Google en la barra del mazo; el navegador obtiene un
+                                <strong>ID token</strong> (Google Identity Services).</li>
+<li>El cliente envía ese token por AJAX a <code>osint_deck_auth_google</code> con el nonce
+                                público. Si Turnstile está activo, también envía el token de verificación.</li>
+<li>El servidor valida el token contra
+                                <code>https://oauth2.googleapis.com/tokeninfo</code> y comprueba que el <code>aud</code>
+                                coincida con tu <strong>Client ID</strong>.</li>
+<li>Con email y <code>sub</code> válidos, se hace <em>upsert</em> del usuario del deck y se fija
+                                la cookie de sesión <code>osd_user</code>.</li>
+</ol>
+<h3>Configuración en Google Cloud</h3>
+<p>Necesitás un proyecto, pantalla de consentimiento OAuth (típicamente tipo externo) y un
+                            <strong>ID de cliente OAuth 2.0</strong> de aplicación <strong>Web</strong>. En el plugin también
+                            podés guardar el <strong>Client Secret</strong> según la guía del panel (algunos flujos lo usan;
+                            el intercambio vía <code>tokeninfo</code> del ID token es el camino documentado en código para la
+                            sesión del deck).</p>
+<ul>
+<li><strong>Origen JavaScript autorizado:</strong> la URL base del sitio donde está el shortcode,
+                                <strong>sin barra final</strong> (el propio wp-admin del plugin lo recuerda en el texto de
+                                ayuda).</li>
+<li><strong>URI de redirección:</strong> para el botón “Sign in with Google” muchas veces basta
+                                el origen; podés añadir la misma URL por compatibilidad.</li>
+</ul>
+<p>En el escritorio de WordPress, el menú del plugin incluye un <strong>desplegable paso a paso</strong>
+                            (“Google SSO”) en <strong>Integraciones y Seguridad</strong>: usalo como checklist junto con esta
+                            documentación.</p>
+<h3>Endpoints AJAX relacionados</h3>
+<ul>
+<li><code>osint_deck_auth_google</code> — validar ID token y abrir sesión.</li>
+<li><code>osint_deck_get_user</code> — estado de sesión y listas (favoritos, reportes abiertos,
+                                agradecimientos pendientes).</li>
+<li><code>osint_deck_logout</code> — cerrar sesión del deck.</li>
+<li><code>osint_deck_delete_my_account</code> — borrado de datos del usuario del deck (con
+                                confirmación estricta en POST).</li>
+</ul>
+<figure class="docs-figure" id="fig-settings-auth">
+    <div class="docs-figure__slot" aria-label="Captura: ajustes Google OAuth">
+        <span class="docs-figure__id">Fig. 9</span>
+        <img src="assets/img/docs/fig-09-auth-google.png" 
+             alt="Panel de configuración de Google OAuth en OSINT Deck" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Integración de Identidad:</strong> Interfaz de configuración en la pestaña 
+        <strong>Integraciones y Seguridad</strong>. El sistema requiere el <em>Client ID</em> 
+        y el <em>Client Secret</em> obtenidos desde Google Cloud Console. Se destaca el uso de 
+        flujos asíncronos para la validación de tokens JWT en el backend, garantizando que 
+        la sesión del investigador sea persistente y segura sin comprometer el esquema de usuarios de WordPress.
+    </figcaption>
+</figure>
+</section><section class="docs-section reveal" id="tool-reports">
+<h2>Reportes de herramientas (bandera en el mazo)</h2>
+<p>Cuando un enlace del catálogo está caído, desactualizado o es inapropiado, el visitante puede
+                            <strong>marcar la herramienta</strong> con el control tipo bandera en la carta. Eso alimenta la
+                            cola que ves en el escritorio como <strong>OSINT Deck → Reportes</strong>
+                            (<code>admin.php?page=osint-deck-tool-reports</code>, pantalla
+                            <code>ToolReportsAdmin.php</code>).</p>
+<h3>Qué se guarda y quién puede hacer qué</h3>
+<ul style="list-style: disc; margin-left: 1.25rem; line-height: 1.85;">
+<li><strong>Usuario con sesión Google en el deck:</strong> el reporte queda asociado a su
+                                <code>user_id</code> en las tablas del plugin. Puede dejar un <strong>comentario</strong>
+                                opcional al reportar (texto saneado y acotado en longitud).</li>
+<li><strong>Visitante anónimo:</strong> puede reportar sin comentario; el sistema usa una
+                                <strong>huella</strong> enviada por el cliente (<code>fp</code>) y la persiste como hash
+                                (<code>ToolReports::fp_hash</code>) para no duplicar reportes del mismo navegador hasta que se
+                                cierre el ticket.</li>
+<li><strong>Toggle:</strong> volver a pulsar la bandera <strong>retira</strong> el reporte abierto
+                                (misma política de usuario o de huella).</li>
+</ul>
+<p>Los inserts y bajas pasan por la acción unificada <code>osd_user_event</code> con evento
+                            <code>report</code> / <code>report_tool</code> (<code>UserEvents.php</code>), con verificación
+                            Turnstile si está habilitado. El contador visible de reportes en la ficha de la herramienta se
+                            actualiza vía el repositorio (<code>increment_reports</code> / <code>decrement_reports</code>).</p>
+<h3>Lado administración</h3>
+<p>En <strong>Reportes</strong> ves herramientas con reportes abiertos. Al marcar como
+                            <strong>reparado</strong>:</p>
+<ul style="list-style: disc; margin-left: 1.25rem; line-height: 1.85;">
+<li>Se cierran los reportes abiertos de esa herramienta y se encola un
+                                <strong>agradecimiento</strong> para quienes habían reportado (<code>ReportThanks</code>).</li>
+<li>El usuario verá un mensaje de gracias en el mazo hasta que lo descarte (acción
+                                <code>osint_deck_dismiss_report_thanks</code>).</li>
+<li><strong>GitHub (opcional):</strong> al cerrar reportes podés generar un issue en el repo; la integración se documenta en
+                                <a href="#github-issues-reparacion">GitHub e issues de reparación</a> (sección propia en este
+                                manual).</li>
+</ul>
+
+<h3>Lectura de estado sin Turnstile</h3>
+<p>La acción <code>osint_deck_report_state</code> solo devuelve qué herramientas tiene reportadas o
+                            pendientes de agradecimiento el visitante (por usuario o huella); no modifica datos y en el código
+                            actual <strong>no</strong> pasa por Turnstile, a diferencia del envío del reporte vía
+                            <code>osd_user_event</code>.</p>
+<div class="callout tip">
+<i data-feather="flag"></i>
+<div>
+<strong>Moderación:</strong> el reporte es señal para el equipo, no prueba automática: conviene
+                                revisar la URL, el contexto y duplicados antes de dar por cerrado el caso.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="github-issues-reparacion">
+<h2>GitHub e issues de reparación</h2>
+<div class="docs-section-lead">
+<p><strong>En esta sección.</strong> Integración opcional para crear <strong>issues en GitHub</strong> cuando un administrador
+marca una herramienta como reparada en <strong>OSINT Deck → Reportes</strong>.
+<strong>Antes:</strong> entender el flujo de la bandera en <a href="#tool-reports">Reportes de herramientas</a>.
+<strong>Código:</strong> <code>GitHubRepairIssueNotifier.php</code>.</p>
+</div>
+<p>Es una función <strong>opcional y voluntaria</strong>: sirve para que el equipo del sitio comparta con el repositorio
+upstream (por ejemplo <code>OsintDeck/OsintDeck</code>) qué herramienta se corrigió, qué decían los reportes y un volcado JSON
+importable.</p>
+
+<h3>Configuración en WordPress</h3>
+<ol style="list-style: decimal; margin-left: 1.25rem; line-height: 1.85;">
+<li>Andá a <strong>OSINT Deck → Ajustes → Integraciones y Seguridad</strong> (pestaña
+<code>tab=auth</code> en la URL de ajustes).</li>
+<li>En la sección <strong>GitHub (repo público)</strong> (<code>#osint-deck-github-section</code>): activá la casilla, indicá
+el repo en formato <code>owner/repo</code> (por defecto suele ser <code>OsintDeck/OsintDeck</code>) y pegá un
+<strong>token de acceso personal</strong> con permiso para crear issues en ese repositorio (en la UI del plugin se recomienda un
+token <em>fine-grained</em>; el asistente paso a paso está en el mismo panel).</li>
+<li>Alternativa al campo del formulario: variable de entorno <code>OSINT_DECK_GITHUB_ISSUES_TOKEN</code> en el servidor (el
+código la lee si la opción en BD está vacía).</li>
+<li>GitHub Enterprise u otra API: podés definir <code>OSINT_DECK_GITHUB_API_URL</code> en <code>wp-config.php</code> para
+cambiar la base de la API respecto de <code>https://api.github.com</code>.</li>
+</ol>
+
+<h3>Uso desde OSINT Deck → Reportes</h3>
+<p>Cuando resolvés reportes abiertos de una herramienta y enviás el formulario de “reparado”, si GitHub está bien configurado
+aparece la opción de <strong>informar al desarrollador</strong> (<code>report_to_developer</code>). Si la marcás, el plugin
+hace <code>POST</code> a la API de GitHub y crea un issue cuyo título sigue el patrón
+<code>[OSINT Deck] Reparada: … (host del sitio)</code>.</p>
+<p>El cuerpo del issue incluye, entre otras cosas: URL del sitio, versión del plugin, nombre y slug de la herramienta, enlace a
+edición en wp-admin, quién cerró el ticket, cantidad de reportes y de agradecimientos, lista de lo reportado (fecha, usuario WP
+o “Anónimo”, mensaje si lo hubo), nota opcional del administrador sobre cómo se resolvió, y un bloque <code>json</code> con el
+estado actual de la herramienta (mismo criterio que exportación; si es muy grande se trunca con aviso en el texto). Si la API
+falla, el panel muestra el error y el mensaje del plugin indica revisar la configuración en Ajustes.</p>
+<p>Si GitHub <strong>no</strong> está configurado y aun así marcás informar al desarrollador, verás un aviso para completar la
+sección de GitHub en <strong>Integraciones y Seguridad</strong> (el enlace directo desde Reportes apunta a
+<code>admin.php?page=osint-deck-settings&amp;tab=auth#osint-deck-github-section</code>).</p>
+
+<h3>Aviso en pantalla Reportes</h3>
+<p>Si la integración no está lista, el plugin puede mostrar un recordatorio de colaboración en <strong>Reportes</strong>; se
+puede descartar y reactivar desde los propios ajustes de GitHub en Integraciones y Seguridad (opción interna
+<code>osint_deck_github_collab_nudge_dismissed</code>).</p>
+
+<div class="callout warning">
+<i data-feather="alert-triangle"></i>
+<div>
+<strong>Token y permisos:</strong> el token es credencial sensible (equivalente a contraseña para la API). No lo compartas ni
+lo subas a repositorios públicos. Si se filtra, revocalo en GitHub y generá uno nuevo. Conviene un token mínimo (solo
+<code>issues: write</code> en el repo que elijas).
+</div>
+</div>
+</section><section class="docs-section reveal" id="security-performance">
+<h2>Seguridad y rendimiento</h2>
+<div class="docs-section-lead">
+<p><strong>En esta sección.</strong> Turnstile, TLDs, logs y coste de las rutas públicas.
+<strong>Audiencia:</strong> integradores y administradores preocupados por abuso y rendimiento.
+<strong>Relacionado:</strong> <a href="#auth-google">Google</a>, <a href="#tool-reports">Reportes</a>,
+<a href="#github-issues-reparacion">GitHub (issues)</a>, <a href="#validation">Dominios / TLDs</a>.</p>
+</div>
+
+<h3 id="cloudflare-turnstile">Integración con Cloudflare Turnstile</h3>
+<p><strong>Aclaración:</strong> no hace falta que el sitio WordPress esté “detrás de” el proxy
+                            Cloudflare para usar esta función. El plugin integra el producto <strong>Turnstile</strong>
+                            (verificación humana / anti-bot de Cloudflare) como <strong>widget y verificación en servidor</strong>,
+                            similar conceptualmente a reCAPTCHA pero con la política de privacidad y UX de Cloudflare.</p>
+<p><strong>Pasos típicos:</strong></p>
+<ol style="list-style: decimal; margin-left: 1.25rem; line-height: 1.85;">
+<li>En <a href="https://dash.cloudflare.com/" rel="noopener" target="_blank">Cloudflare Dashboard</a>,
+                                abrí <strong>Turnstile</strong> y creá un sitio/widget (modo managed o no interactivo según prefieras).</li>
+<li>Copiá la <strong>Site Key</strong> (pública) y la <strong>Secret Key</strong> (privada).</li>
+<li>En WordPress: <strong>OSINT Deck → Ajustes → Integraciones y Seguridad</strong> (Google, Turnstile y GitHub),
+                                activá Turnstile y pegá ambas claves. Guardá los cambios.</li>
+</ol>
+<p>El servidor valida el token con
+                            <code>https://challenges.cloudflare.com/turnstile/v0/siteverify</code>
+                            (<code>Turnstile.php</code>). El front envía el token en
+                            <code>cf_turnstile_response</code> (o variante con guión). Si Turnstile está desactivado o faltan
+                            claves, la verificación no se exige y las rutas siguen (útil en entornos de desarrollo local).</p>
+<p><strong>Qué protege cuando está activo</strong> (resumen): búsqueda del mazo, seguimiento de clics,
+                            comprobación de iframes, bloqueo de iframe en caché, login y logout con Google, borrado de
+                            historial, vaciar favoritos, borrar cuenta, cierre de mensajes de agradecimiento por reportes, y
+                            los eventos públicos unificados <code>osd_user_event</code> (favoritos, me gusta,
+                            <strong>reporte de herramienta</strong>, etc.). Algunas lecturas de estado (p. ej. sesión actual o
+                            listado de historial) no pasan por Turnstile; revisá el código de
+                            <code>AjaxHandler.php</code> y <code>UserEvents.php</code> si necesitás el detalle exacto por acción.</p>
+<p>Documentación oficial:
+                            <a href="https://developers.cloudflare.com/turnstile/" rel="noopener" target="_blank">Cloudflare Turnstile</a>.
+                        </p>
+<h3>Validación de dominios y TLD</h3>
+<p>La detección “dominio” depende de listas IANA mantenidas por <code>TLDManager</code> y tareas
+                            programadas (véase <a href="#validation">Dominios y TLDs</a>). Esto reduce falsos positivos
+                            y evita
+                            consultas externas por cada pulsación en el deck.</p>
+<h3>Auditoría y logs</h3>
+<p><code>src/Infrastructure/Persistence/LogsTable.php</code> define la tabla
+                            <code>{prefix}osint_deck_logs</code> (mensaje, nivel, contexto serializado, marca temporal).
+                            Complementa
+                            el componente <code>Infrastructure/Service/Logger.php</code> para trazas operativas y
+                            depuración
+                            sin volcar datos sensibles al front.
+                        </p>
+<h3>Superficie AJAX y coste</h3>
+<ul style="list-style: disc; margin-left: 1.25rem; line-height: 1.85;">
+<li><strong>Nonces</strong> de WordPress en acciones públicas y de administración.</li>
+<li><strong>Iframes:</strong> comprobación por lotes con techo de URLs por petición y
+                                resultados
+                                cacheados en transientes para limitar latencia y carga sobre orígenes externos.</li>
+<li><strong>Capacidades</strong> (<code>current_user_can</code>) en rutas de mantenimiento e
+                                importación.</li>
+</ul>
+<figure class="docs-figure" id="fig-security-turnstile">
+    <div class="docs-figure__slot" aria-label="Captura: Turnstile en ajustes">
+        <span class="docs-figure__id">Fig. 10</span>
+        <img src="assets/img/docs/fig-10-turnstile.png" 
+             alt="Configuración de Cloudflare Turnstile en el panel de OSINT Deck" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Protección Anti-Abuso:</strong> Panel de integración con <strong>Cloudflare Turnstile</strong>. 
+        A diferencia de los CAPTCHAs tradicionales, esta implementación utiliza un desafío no interactivo 
+        que valida la integridad del navegador del analista. El sistema intercepta las peticiones AJAX 
+        críticas (reportes, búsquedas, autenticación) y exige un <em>token</em> de validación 
+        verificado en el lado del servidor, mitigando eficazmente ataques de scraping y DoS a nivel de aplicación.
+    </figcaption>
+</figure>
+</section><section class="docs-section reveal" id="validation">
+<h2>Dominios y TLDs</h2>
+<p>El motor valida dominios usando una copia local de la lista oficial IANA. Un cron del plugin
+                            refresca esa lista para no depender de una petición en cada búsqueda.</p>
+<ul>
+<li><strong>Fuente IANA:</strong> <a href="https://data.iana.org/TLD/tlds-alpha-by-domain.txt" rel="noopener" target="_blank">tlds-alpha-by-domain.txt</a> almacenado en opciones de WordPress.
+                            </li>
+<li><strong>Cron semanal:</strong> acción programada <code>osint_deck_update_tlds</code>.
+                            </li>
+<li><strong>TLDs personalizados:</strong> campo o lista en <strong>OSINT Deck → Ajustes →
+                                    Dominios / TLDs</strong> para laboratorios o dominios especiales.</li>
+<li><strong>Uso en runtime:</strong> el detector de tipo “dominio” consulta esos datos antes
+                                de marcar un token como FQDN válido.</li>
+</ul>
+<figure class="docs-figure" id="fig-domains-tlds">
+    <div class="docs-figure__slot" aria-label="Captura: pantalla Dominios y TLDs">
+        <span class="docs-figure__id">Fig. 11</span>
+        <img src="assets/img/docs/fig-11-dominios-tlds.png"
+             alt="Ajustes de OSINT Deck: sincronización IANA y TLDs personalizados"
+             class="docs-figure__image"
+             loading="lazy"
+             width="1280"
+             height="720"
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>TLDManager:</strong> pantalla <strong>Dominios / TLDs</strong> para revisar la lista derivada de IANA,
+        forzar actualización y definir sufijos adicionales en laboratorio o entornos internos.
+    </figcaption>
+</figure>
+</section><section class="docs-section reveal" id="user-data">
+<h2>Historial, favoritos y privacidad</h2>
+<p>Estas capacidades enlazan el front con <code>admin-ajax.php</code>. El flujo de la
+                            <strong>bandera de reporte</strong> está explicado en detalle en
+                            <a href="#tool-reports">Reportes de herramientas</a>. Aquí el listado de acciones relacionadas.</p>
+<p>Requieren nonces válidos;
+                            muchas escrituras exigen Turnstile si está activo (véase
+                            <a href="#cloudflare-turnstile">Turnstile</a>).</p>
+<ul>
+<li><strong>Historial de búsqueda:</strong> <code>osint_deck_get_history</code>,
+                                <code>osint_deck_clear_history</code>.</li>
+<li><strong>Favoritos:</strong> <code>osint_deck_clear_favorites</code> y eventos
+                                relacionados vía <code>osd_user_event</code>.</li>
+<li><strong>Interacción:</strong> <code>osd_user_event</code> — likes, reportes de
+                                herramientas, etc., con comprobaciones anti-abuso.</li>
+<li><strong>Reportes:</strong> <code>osint_deck_report_state</code>,
+                                <code>osint_deck_dismiss_report_thanks</code>.</li>
+</ul>
+<div class="callout info">
+<i data-feather="info"></i>
+<div>
+<strong>Privacidad:</strong> el administrador debe reflejar en la política del sitio qué
+                                datos guarda el plugin (historial local, cuenta Google, métricas agregadas). Los
+                                visitantes con cuenta pueden usar borrado de cuenta vía la acción indicada en la sección
+                                de autenticación, si la UI lo expone.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="metrics-dashboard">
+<h2>Métricas y panel de administración</h2>
+<p>La pantalla <strong>OSINT Deck → Métricas</strong>
+                            (<code>Presentation/Admin/MetricsScreen.php</code>)
+                            agrega estadísticas de uso (clics, herramientas destacadas, filtros por rango temporal según
+                            versión). Los gráficos se renderizan con <strong>Chart.js</strong> cargado solo en el hook
+                            admin de
+                            esa página: el script local preferido es
+                            <code>assets/vendor/chart.js/chart.umd.min.js</code>, con fallback CDN si el archivo no
+                            viaja en el
+                            paquete. La lógica de dibujo vive en <code>assets/js/admin-dashboard-charts.js</code>,
+                            apoyada en
+                            datos preparados por <code>DashboardChartsData.php</code>.
+                        </p>
+<div class="callout info">
+<i data-feather="bar-chart-2"></i>
+<div>
+<strong>Privacidad:</strong> las métricas son agregadas de uso del sitio; no sustituyen
+                                logs de
+                                seguridad ni auditoría forense.
+                            </div>
+</div>
+<figure class="docs-figure" id="fig-metrics">
+<div class="docs-figure__slot">
+<span class="docs-figure__id">Fig. 12</span>
+<img alt="Panel de Métricas de OSINT Deck con gráficos Chart.js" class="docs-figure__image" decoding="async" height="720" loading="lazy" src="assets/img/docs/fig-12-metricas.webp" width="1280"/>
+</div>
+<figcaption class="docs-figure__caption">
+                                Vista detallada del panel de métricas y estadísticas de uso.
+                            </figcaption>
+</figure>
+</section><section class="docs-section reveal" id="admin">
+<h2>Administración (wp-admin)</h2>
+<p>Desde el menú <strong>OSINT Deck</strong> accedés al CRUD del mazo y a las pantallas de
+                            configuración. Los nombres exactos de pestañas pueden variar ligeramente entre versiones.
+                        </p>
+<ul>
+<li><strong>Herramientas:</strong> listado con filtros, edición en línea o pantalla
+                                dedicada, categorías, iconos, orden, metadatos de acceso/licencia, import/export JSON de
+                                definiciones.</li>
+<li><strong>Ajustes (pestañas):</strong> General (textos, ayuda, comunidad), Diseño (tema,
+                                barra), Datos, Dominios/TLDs, Logs, Soporte, Autenticación, etc.</li>
+<li><strong>Métricas y reportes:</strong> agregados de uso; cola o listado de reportes de
+                                usuarios sobre herramientas rotas o irrelevantes.</li>
+<li><strong>Mantenimiento:</strong> descarga o asignación manual de iconos remotos cuando el
+                                hosting lo permite.</li>
+</ul>
+<figure class="docs-figure" id="fig-admin-tools">
+    <div class="docs-figure__slot" aria-label="Captura: lista de herramientas admin">
+        <span class="docs-figure__id">Fig. 13</span>
+        <img src="assets/img/docs/fig-13-herramientas-admin.png" 
+             alt="Panel de gestión de herramientas de OSINT Deck en WordPress" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Gestión de Inventario:</strong> Vista del panel <strong>Herramientas</strong> en wp-admin. 
+        El sistema permite un control granular sobre el catálogo (CRUD), incluyendo la asignación de categorías, 
+        metadatos de acceso y validación de estados. La arquitectura <em>data-driven</em> permite que 
+        cualquier cambio aquí se refleje instantáneamente en el motor de decisiones del front-end.
+    </figcaption>
+</figure>
+<figure class="docs-figure" id="fig-admin-tabs">
+    <div class="docs-figure__slot" aria-label="Captura: pestañas de ajustes">
+        <span class="docs-figure__id">Fig. 14</span>
+        <img src="assets/img/docs/fig-14-ajustes-pestanas.png" 
+             alt="Interfaz de configuración modular de OSINT Deck" 
+             class="docs-figure__image" 
+             loading="lazy" 
+             width="1280" 
+             height="720" 
+             decoding="async">
+    </div>
+    <figcaption class="docs-figure__caption">
+        <strong>Arquitectura de Configuración:</strong> Interfaz modular de ajustes organizada por pestañas operativas. 
+        Este diseño facilita la separación de responsabilidades, permitiendo configurar de forma independiente 
+        el diseño visual, la política de datos y los parámetros de seguridad, optimizando la 
+        experiencia del administrador del sitio (UX/DX).
+    </figcaption>
+</figure>
+
+</section><section class="docs-section reveal" id="architecture">
+<h2>Arquitectura del sistema</h2>
+<div class="docs-section-lead">
+<p><strong>En esta sección.</strong> Mapa de carpetas bajo <code>src/</code> y separación de capas (Domain, Infrastructure,
+Presentation).
+<strong>Audiencia:</strong> desarrolladores y quienes mantienen el código.
+<strong>Antes:</strong> conviene haber leído la puesta en marcha; <strong>después:</strong>
+<a href="#decision-engine">Motor de decisiones</a> y <a href="#ajax">Referencia AJAX</a>.</p>
+</div>
+
+<p>El código bajo convenciones PSR-4 vive en <code>src/</code> y se organiza por capas para
+                            separar
+                            reglas de negocio, infraestructura y presentación.</p>
+<ul style="list-style: disc; margin-left: 1.25rem; line-height: 1.85;">
+<li><strong><code>Core/</code></strong> — <code>Bootstrap.php</code> coordina el ciclo de
+                                vida del
+                                plugin: instancia repositorios, servicios de dominio, registra hooks de WordPress, menús
+                                admin,
+                                shortcodes, AJAX y migraciones de esquema.</li>
+<li><strong><code>Domain/</code></strong> — Lógica de negocio independiente del framework:
+                                <code>Service/DecisionEngine.php</code>, <code>Service/InputParser.php</code>,
+                                <code>Service/NaiveBayesClassifier.php</code> e interfaces en <code>Repository/</code>
+                                (contratos de herramientas y categorías).
+                            </li>
+<li><strong><code>Infrastructure/</code></strong> — Persistencia
+                                (<code>Persistence/*.php</code>:
+                                tablas personalizadas, repositorios concretos), integraciones
+                                (<code>Service/TLDManager.php</code>,
+                                <code>Auth/</code>), seguridad (<code>Security/Turnstile.php</code>) y utilidades
+                                (logger,
+                                iconos, respaldos).
+                            </li>
+<li><strong><code>Presentation/</code></strong> — <code>Admin/</code> (ajustes, métricas,
+                                herramientas, import/export), <code>Frontend/Shortcodes.php</code> y <code>Api/</code>
+                                (p. ej. <code>AjaxHandler.php</code>, eventos de usuario).</li>
+</ul>
+<p>Los datos semilla y configuraciones estáticas complementarias residen en <code>data/</code>
+                            (JSON de herramientas, categorías, entrenamiento y dorks), alimentando un modelo
+                            <em>data-driven</em> sin recompilar PHP para ajustes de catálogo en entornos administrados.
+                        </p>
+<div class="callout tip">
+<i data-feather="layers"></i>
+<div>
+<strong>Extensión:</strong> nuevas capacidades deben respetar la frontera Domain ↔
+                                Infrastructure (reglas sin SQL directo en dominio) y usar hooks de WordPress para
+                                enganchar
+                                UI y AJAX.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="decision-engine">
+<h2>Motor de decisiones (Decision Engine)</h2>
+<p>El cerebro operativo es <code>src/Domain/Service/DecisionEngine.php</code>. Recibe la
+                            consulta del
+                            usuario y devuelve estructura lista para el front: modo de operación, entradas detectadas y
+                            conjunto de herramientas/cartas relevantes.</p>
+<h3>Flujo de procesamiento</h3>
+<ol style="list-style: decimal; margin-left: 1.25rem; line-height: 1.85;">
+<li><strong>Entrada</strong> — Texto libre desde la barra del deck (shortcode público).</li>
+<li><strong>Parsing</strong> — <code>InputParser.php</code> aplica patrones (regex) y
+                                validación
+                                asistida por <code>TLDManager</code> para distinguir IP, dominio, correo, hash, URL,
+                                ASN,
+                                teléfono, wallet, etc.</li>
+<li><strong>Modo</strong> — Sin entradas estructuradas: <code>MODE_CATALOG</code> (catálogo
+                                filtrable). Con entradas: <code>MODE_INVESTIGATION</code> (activación contextual de
+                                herramientas).</li>
+<li><strong>Clasificación y ranking</strong> — El repositorio de herramientas aporta
+                                metadatos;
+                                opcionalmente interviene <code>NaiveBayesClassifier</code> para sugerir mazos en función
+                                de
+                                rasgos del input.</li>
+<li><strong>Salida</strong> — Colección normalizada consumida por JavaScript vía AJAX
+                                (<code>admin-ajax.php</code>, acción <code>osint_deck_search</code> u otras definidas en
+                                <code>AjaxHandler</code>).
+                            </li>
+</ol>
+<h3 id="naive-bayes">Clasificador Naive Bayes (¿qué es y para qué está?)</h3>
+<p>En este proyecto <strong>“bayesiano”</strong> se refiere al <strong>clasificador Naive Bayes</strong>
+                            implementado en <code>src/Domain/Service/NaiveBayesClassifier.php</code>. Es un modelo probabilístico
+                            clásico de NLP: a partir de ejemplos de texto etiquetados, estima qué tan probable es que una
+                            frase nueva pertenezca a una categoría (por ejemplo intención de ayuda, tipo de dato técnico,
+                            saludo, etc.). “Naive” indica que se asume independencia entre palabras; simplifica el cálculo y
+                            suele funcionar bien cuando las palabras clave son buenas señales, como en consultas tipo
+                            <em>dorks</em> o OSINT.</p>
+<p><strong>Orden real en el motor:</strong> primero <code>InputParser</code> intenta detectar tipos
+                            con <strong>expresiones regulares</strong> y validaciones (dominio con TLD, IP, hash, URL…). Solo
+                            si <strong>no hubo coincidencias</strong>, entra el Naive Bayes: clasifica el texto libre y, si la
+                            predicción es aceptada, se traduce a un tipo interno compatible con el resto del
+                            <code>DecisionEngine</code>. Así las regex cubren lo estructurado y el clasificador refuerza
+                            lenguaje más abierto o ambiguo.</p>
+<p><strong>Datos de entrenamiento:</strong> semilla en <code>data/training_data.json</code>; en
+                            producción el modelo y ejemplos pueden persistir en opciones de WordPress. Los administradores
+                            pueden ampliar el entrenamiento desde <strong>OSINT Deck → Entrenamiento IA (Naive Bayes)</strong>
+                            (<code>AiTrainingManager.php</code>), alineado con backups que incluyen el estado del clasificador
+                            (<code>DeckFullBackup</code>).</p>
+<div class="callout info">
+<i data-feather="cpu"></i>
+<div>
+<strong>No es ChatGPT:</strong> es un clasificador ligero en PHP (y espejo en JS para el
+                                cliente donde aplica), pensado para latencia baja y hosting compartido, no para generar texto.
+                            </div>
+</div>
+<h3>Modelo data-driven</h3>
+<p>El catálogo no está hardcodeado en el motor: se nutre de definiciones persistidas
+                            (importables
+                            desde JSON en <code>data/</code> como <code>tools-defaults.json</code>,
+                            <code>categories-defaults.json</code>, <code>training_data.json</code>, etc.) y de filas en
+                            tablas
+                            propias tras la activación del plugin. Esto permite actualizar herramientas sin tocar el
+                            núcleo
+                            del clasificador salvo nuevos tipos de entrada.
+                        </p>
+<div class="code-block-wrapper">
+<pre class="line-numbers"><code class="language-bash"># Referencias de código y datos
+src/Domain/Service/DecisionEngine.php
+src/Domain/Service/InputParser.php
+data/tools-defaults.json
+data/categories-defaults.json</code></pre>
+<button class="copy-btn" data-clipboard-target="code">Copiar</button>
+</div>
+</section><section class="docs-section reveal" id="hooks">
+<h2>Cron y tareas programadas</h2>
+<p>WordPress dispara estos hooks según la cola de <code>wp-cron.php</code> (en muchos hostings
+                            se ejecuta al visitar el sitio; en producción conviene cron real del sistema apuntando a
+                            <code>wp-cron.php</code>).</p>
+<ul>
+<li><code>osint_deck_update_tlds</code> — actualización periódica (semanal) de la lista IANA
+                                de TLDs.</li>
+<li><code>osint_deck_daily_cleanup</code> — limpieza diaria de datos temporales o
+                                mantenimiento ligero según la versión del plugin.</li>
+</ul>
+</section><section class="docs-section reveal" id="ajax">
+<h2>AJAX (panel técnico)</h2>
+<p>Todas las acciones van contra <code>wp-admin/admin-ajax.php</code> (o
+                            <code>admin-ajax.php</code> en la raíz de admin) con el parámetro <code>action</code> igual
+                            al nombre listado. El front envía nonces para validar el origen.</p>
+<p><strong>Públicas (o mixtas):</strong> búsqueda y motor <code>osint_deck_search</code>,
+                            seguimiento de clics <code>osint_deck_track_click</code>, comprobación de embeds
+                            <code>osint_deck_check_iframe</code>, bloques de reporte
+                            <code>osint_deck_report_block</code>, autenticación Google, historial, favoritos,
+                            <code>osd_user_event</code>, y acciones de reportes citadas en <a href="#user-data">Historial y favoritos</a>.</p>
+<p><strong>Solo administración:</strong> mantenimiento de iconos
+                            (<code>osint_deck_force_download_icons</code>, <code>osint_deck_list_remote_icons</code>,
+                            <code>osint_deck_save_manual_icons</code>), import/export de herramientas
+                            (<code>osint_deck_import_tool</code>, <code>osint_deck_export_tool</code>), sugerencias para
+                            métricas <code>osint_deck_metrics_tool_suggest</code>, etc. Requieren usuario con capacidad
+                            adecuada y nonce de admin.</p>
+<div class="callout tip">
+<i data-feather="zap"></i>
+<div>
+<strong>Depuración:</strong> con las herramientas de red del navegador (pestaña Network)
+                                filtrá por <code>admin-ajax.php</code> y revisá el cuerpo de la respuesta si una carta o
+                                el login fallan en silencio.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="about">
+<h2>Sobre el Proyecto</h2>
+<p><strong>OSINT Deck</strong> es un plugin para WordPress que <strong>centraliza y
+                                organiza</strong>
+                            herramientas de investigación en fuentes abiertas. El usuario ingresa un dato (correo,
+                            dominio,
+                            IP, hash, etc.) y el sistema lo <strong>clasifica automáticamente</strong> para activar los
+                            recursos pertinentes —vista embebida o acceso externo con parámetros cargados— usando una
+                            lógica
+                            de <strong>mazos y cartas</strong> que facilita el flujo de trabajo.</p>
+<p>El proyecto fue desarrollado en la <strong>Licenciatura en Ciberseguridad</strong> de la
+                            <strong>Universidad Nacional Raúl Scalabrini Ortiz (UNSO)</strong>, Argentina, tomando como
+                            referencia la experiencia del blog
+                            <a href="https://osint.com.ar" rel="noopener noreferrer" target="_blank">OSINT.com.ar</a>.
+                            Hoy está publicado como <strong>software libre</strong> y puede instalarse en cualquier
+                            WordPress.
+                            Para implementación interna véase <a href="#architecture">Arquitectura del sistema</a>.
+                        </p>
+<div class="callout tip">
+<i data-feather="globe"></i>
+<div>
+<strong>Mantente actualizado:</strong> Visita <a href="https://osint.com.ar" rel="noopener noreferrer" target="_blank">osint.com.ar</a> para leer artículos sobre
+                                técnicas OSINT,
+                                herramientas, casos de estudio y las últimas novedades en ciberseguridad.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="features">
+<h2>Características Principales</h2>
+<h3>Detección automática del tipo de dato</h3>
+<p>El motor de decisión analiza el texto ingresado. Entre otros formatos:</p>
+<ul>
+<li>Email, Dominio / subdominio, URL, IP v4 / v6</li>
+<li>ASN, MAC, UUID, Hashes (MD5, SHA1, SHA256)</li>
+<li>Teléfonos, Coordenadas, Wallets BTC / ETH</li>
+<li>Claves PGP, Archivos conocidos, Username / alias</li>
+<li>Nombre completo, ZIP / Código postal, Paquetes com.*.*</li>
+</ul>
+<h3>Mazo dinámico de herramientas</h3>
+<ul>
+<li>Cartas por herramienta con enlaces y metadatos</li>
+<li>Filtros por categoría, acceso y licencia</li>
+<li>Embebidos con comprobación por AJAX cuando aplica</li>
+<li>Reportes, favoritos y “me gusta” según sesión</li>
+<li>Cartas de ayuda, crisis y comunidad (textos editables en admin)</li>
+</ul>
+<p>Para gráficos, filtros y detalle de implementación véase
+                            <a href="#metrics-dashboard">Métricas y panel de administración</a>.
+                        </p>
+</section><section class="docs-section reveal" id="docs-imagenes">
+<h2>Guía visual: imágenes en esta documentación</h2>
+<p>Las capturas están en las secciones que corresponden (instalación, métricas, ajustes, etc.). Esta entrada del manual
+solo ofrece un <strong>índice</strong> para ir directo a una figura concreta si ya sabés qué buscás.</p>
+<h3>Índice de figuras</h3>
+<p class="docs-figures-intro">Los números <strong>Fig. 1…14</strong> siguen el orden en que las figuras aparecen al leer el
+manual de principio a fin.</p>
+<ul style="list-style: disc; margin-left: 1.25rem; line-height: 1.85;">
+<li><a href="#fig-github-releases">Fig. 1 — Releases en GitHub (ZIP)</a></li>
+<li><a href="#fig-wp-upload-plugin">Fig. 2 — Subir plugin en WordPress</a></li>
+<li><a href="#fig-wp-plugins-active">Fig. 3 — Plugin instalado y activo</a></li>
+<li><a href="#fig-editor-shortcode">Fig. 4 — Editor con shortcode del mazo</a></li>
+<li><a href="#fig-update-checker">Fig. 5 — Actualización del plugin desde el escritorio</a></li>
+<li><a href="#fig-wp-menu-osint">Fig. 6 — Menú OSINT Deck en wp-admin</a></li>
+<li><a href="#fig-public-deck">Fig. 7 — Mazo en la web pública (barra y resultados)</a></li>
+<li><a href="#fig-public-filters">Fig. 8 — Filtros, cartas y acciones del visitante</a></li>
+<li><a href="#fig-settings-auth">Fig. 9 — Pantalla Autenticación (Google OAuth)</a></li>
+<li><a href="#fig-security-turnstile">Fig. 10 — Turnstile / opciones de seguridad</a></li>
+<li><a href="#fig-domains-tlds">Fig. 11 — Dominios y TLDs (IANA + personalizados)</a></li>
+<li><a href="#fig-metrics">Fig. 12 — Métricas y uso agregado</a></li>
+<li><a href="#fig-admin-tools">Fig. 13 — Gestión de herramientas (lista / edición)</a></li>
+<li><a href="#fig-admin-tabs">Fig. 14 — Pestañas de ajustes (General, Diseño…)</a></li>
+</ul>
+</section><section class="docs-section reveal" id="roadmap">
+<h2>Roadmap inicial</h2>
+<ul>
+<li>[ ] Soporte para nuevos tipos de input avanzados.</li>
+<li>[ ] Exportación de mazos personalizados.</li>
+<li>[ ] Dashboard ampliado con comparativas de métricas.</li>
+<li>[ ] Integración con fuentes externas OSINT.</li>
+<li>[ ] Publicación en WordPress Plugin Directory.</li>
+</ul>
+</section><section class="docs-section reveal" id="acknowledgments">
+<h2>Agradecimientos</h2>
+<div class="callout info">
+<i data-feather="award"></i>
+<div>
+<strong>Marco académico:</strong> OSINT Deck fue desarrollado en la Licenciatura en
+                                Ciberseguridad de la <strong>Universidad Nacional Raúl Scalabrini Ortiz (UNSO)</strong>,
+                                San Isidro, Buenos Aires, Argentina.
+                            </div>
+</div>
+<h3>Autoridades</h3>
+<p>
+                            Agradecemos profundamente a las autoridades de la universidad por su apoyo y visión:
+                        </p>
+<!-- Contenedor dinámico para autoridades (renderizado por acknowledgments.js) -->
+<div class="ack-grid" id="authorities-grid"></div>
+<h3>Cuerpo Docente</h3>
+<p>
+                            Este proyecto no habría sido posible sin la dedicación, conocimiento y guía del cuerpo
+                            docente de la carrera:
+                        </p>
+<!-- Contenedor dinámico para docentes (renderizado por acknowledgments.js) -->
+<div class="ack-grid ack-grid-professors" id="professors-grid"></div>
+<h3>Comunidad y Colaboración</h3>
+<p>
+                            Agradecemos también a la comunidad de
+                            <a href="https://osint.com.ar" rel="noopener noreferrer" target="_blank">OSINT.com.ar</a>,
+                            cuyo trabajo y dedicación en el campo de la inteligencia de fuentes abiertas inspiró y dio
+                            contexto a este proyecto.
+                        </p>
+<div class="callout tip" style="margin-top: 30px;">
+<i data-feather="heart"></i>
+<div>
+<strong>Gratitud:</strong> Este proyecto es el resultado del esfuerzo conjunto de
+                                estudiantes, docentes y la comunidad OSINT. Gracias a todos los que hicieron posible
+                                este
+                                trabajo.
+                            </div>
+</div>
+</section><section class="docs-section reveal" id="authors">
+<h2>Autores</h2>
+<p>Equipo de desarrollo:</p>
+<ul>
+<li>Sebastián Cendra</li>
+<li>Claudio Pandelo</li>
+<li>Paolo Peña Ramírez</li>
+<li>Guillermo Quintana</li>
+<li>Damián Radiminsky</li>
+</ul>
+</section></div>
+</main>
+</div>
+</div>
+<button id="back-to-top" title="Volver arriba">
+<i data-feather="arrow-up"></i>
+</button>
+<footer>
+<div class="container">
+<div class="footer-content">
+<p>© 2026 OSINT Deck. Sitio de documentación — <a href="https://github.com/OsintDeck/OsintDeck.github.io" rel="noopener" target="_blank">repositorio GitHub</a>. Licencia GPL-3.0 (<code>LICENSE</code>).</p>
+<div class="footer-links">
+<a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
+<a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
+<a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
+<a href="https://github.com/OsintDeck/OsintDeck"><i data-feather="github"></i> GitHub</a>
+<a href="#"><i data-feather="arrow-up"></i> Arriba</a>
+</div>
+</div>
+</div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="assets/js/docs-panel.js"></script>
+<script src="assets/js/sidebar-doc-nav.js"></script>
+<script src="assets/js/gsap-init.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/sidebar-tree.js"></script>
+<script src="assets/js/acknowledgments.js"></script>
 </body>
-
 </html>

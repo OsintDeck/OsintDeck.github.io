@@ -1,29 +1,53 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Reset sidebar scroll to top
-    const sidebar = document.querySelector('.sidebar');
-    if (sidebar) {
-        sidebar.scrollTop = 0;
+function bootMain() {
+    if (!document.body.classList.contains('docs-page')) {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+            sidebar.scrollTop = 0;
+        }
     }
 
-    // Initialize Feather Icons
-    feather.replace();
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
 
     // Smooth scrolling for anchor links with offset for fixed header
+    const docsPanelEl = document.getElementById('docs-panel');
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const target = document.querySelector(targetId);
-            if (target) {
-                const headerOffset = 80; // Height of fixed header
-                const elementPosition = target.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
+            const href = this.getAttribute('href');
+            if (!href || href === '#') {
+                return;
             }
+            const targetId = href;
+            const target = document.querySelector(targetId);
+
+            if (
+                docsPanelEl &&
+                target &&
+                target.classList.contains('docs-section') &&
+                target.closest('#docs-panel')
+            ) {
+                e.preventDefault();
+                document.dispatchEvent(
+                    new CustomEvent('od-docs-navigate', { detail: { id: targetId.slice(1) } })
+                );
+                return;
+            }
+
+            if (!target) {
+                return;
+            }
+
+            e.preventDefault();
+            const headerOffset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
         });
     });
 
@@ -31,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('.sidebar a');
 
-    if (sections.length > 0 && navLinks.length > 0) {
+    if (sections.length > 0 && navLinks.length > 0 && !docsPanelEl) {
         window.addEventListener('scroll', () => {
             let current = '';
             sections.forEach(section => {
@@ -55,20 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarSearch = document.getElementById('sidebar-search');
     const sidebarNav = document.getElementById('sidebar-nav');
 
-    if (sidebarSearch && sidebarNav) {
+    if (sidebarSearch && sidebarNav && !sidebarNav.classList.contains('sidebar-tree')) {
         sidebarSearch.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
             const navItems = sidebarNav.querySelectorAll('li');
 
             navItems.forEach(item => {
                 const link = item.querySelector('a');
-                const text = link.textContent.toLowerCase();
-
-                if (text.includes(searchTerm)) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
+                if (!link) {
+                    item.style.display = searchTerm ? 'none' : '';
+                    return;
                 }
+                const text = link.textContent.toLowerCase();
+                item.style.display = text.includes(searchTerm) ? '' : 'none';
             });
         });
     }
@@ -100,10 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // docs-ux-upgrade: Intersection Observer for Reveal Animations
+    // Reveal: GSAP + ScrollTrigger en gsap-init.js cuando hay CDN; si no, observador aquí.
     const revealElements = document.querySelectorAll('.reveal');
-
-    if (revealElements.length > 0) {
+    if (revealElements.length > 0 && !document.documentElement.classList.contains('od-gsap-reveal')) {
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -140,44 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // hero-parallax-upgrade: Parallax Effect for Hero Section (SIMPLIFIED)
-    const heroBgLayer = document.querySelector('.hero-bg-layer');
-    const heroContent = document.querySelector('.hero-content');
     const isDesktop = window.innerWidth > 768;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (heroBgLayer && heroContent && isDesktop && !prefersReducedMotion) {
-        let ticking = false;
-
-        const updateParallax = () => {
-            const scrolled = window.pageYOffset;
-            const heroSection = document.querySelector('.hero');
-
-            if (heroSection) {
-                const heroHeight = heroSection.offsetHeight;
-
-                // Only apply parallax while in hero section
-                if (scrolled < heroHeight) {
-                    // Background moves at 0.3x speed (slower)
-                    const bgOffset = scrolled * 0.3;
-                    heroBgLayer.style.transform = `translateY(${bgOffset}px)`;
-
-                    // Content moves at 0.1x speed (very subtle)
-                    const contentOffset = scrolled * 0.1;
-                    heroContent.style.transform = `translateY(${contentOffset}px)`;
-                }
-            }
-
-            ticking = false;
-        };
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(updateParallax);
-                ticking = true;
-            }
-        });
-    }
 
     // docs-parallax-upgrade: Parallax Effect for Documentation Hero
     const docsHeroBgLayer = document.querySelector('.docs-hero-bg-layer');
@@ -185,38 +171,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (docsHeroBgLayer && docsHeroContent && isDesktop && !prefersReducedMotion) {
         let tickingDocs = false;
+        const docsHero = document.querySelector('.docs-hero');
+        const introSection = document.getElementById('intro');
+        const useIntroScroll =
+            docsHero &&
+            introSection &&
+            document.getElementById('docs-panel') &&
+            introSection.contains(docsHero);
 
         const updateDocsParallax = () => {
-            const scrolled = window.pageYOffset;
-            const docsHero = document.querySelector('.docs-hero');
+            if (!docsHero) {
+                tickingDocs = false;
+                return;
+            }
+            const docsHeroHeight = docsHero.offsetHeight;
+            const relativeScroll = useIntroScroll
+                ? introSection.scrollTop
+                : window.pageYOffset - docsHero.offsetTop + 100;
 
-            if (docsHero) {
-                const docsHeroTop = docsHero.offsetTop;
-                const docsHeroHeight = docsHero.offsetHeight;
-                const relativeScroll = scrolled - docsHeroTop + 100;
+            if (relativeScroll > -100 && relativeScroll < docsHeroHeight + 200) {
+                const bgOffset = relativeScroll * 0.2;
+                docsHeroBgLayer.style.transform = `translateY(${bgOffset}px)`;
 
-                if (relativeScroll > -100 && relativeScroll < docsHeroHeight + 200) {
-                    const bgOffset = relativeScroll * 0.2;
-                    docsHeroBgLayer.style.transform = `translateY(${bgOffset}px)`;
-
-                    const contentOffset = relativeScroll * 0.08;
-                    docsHeroContent.style.transform = `translateY(${contentOffset}px)`;
-                }
+                const contentOffset = relativeScroll * 0.08;
+                docsHeroContent.style.transform = `translateY(${contentOffset}px)`;
             }
 
             tickingDocs = false;
         };
 
-        window.addEventListener('scroll', () => {
+        const scheduleDocsParallax = () => {
             if (!tickingDocs) {
                 window.requestAnimationFrame(updateDocsParallax);
                 tickingDocs = true;
             }
-        });
+        };
+
+        if (useIntroScroll) {
+            introSection.addEventListener('scroll', scheduleDocsParallax, { passive: true });
+        } else {
+            window.addEventListener('scroll', scheduleDocsParallax, { passive: true });
+        }
     }
 
-    // Re-initialize Feather icons after dynamic content loads
+    // Re-initialize Feather icons after dynamic content loads + refrescar triggers GSAP
     setTimeout(() => {
-        feather.replace();
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+        if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.refresh();
+        }
     }, 100);
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootMain);
+} else {
+    bootMain();
+}

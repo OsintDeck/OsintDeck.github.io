@@ -11,6 +11,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
     <style>
         .discussions-container {
             max-width: 1200px;
@@ -206,7 +207,7 @@
         <div class="container">
             <nav>
                 <a href="index.html" class="logo">
-                    <img src="assets/img/logo.png" alt="OSINT Deck" height="40">
+                    <img src="assets/img/logo.svg" alt="OSINT Deck" height="40" width="160">
                 </a>
                 <div class="nav-links">
                     <a href="index.html"><i data-feather="home"></i> Inicio</a>
@@ -214,8 +215,8 @@
                     <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
                     <a href="discussions.html" class="active"><i data-feather="message-circle"></i> Discusiones</a>
                     <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
-                    <a href="https://github.com/OsintDeck/OsintDeck" target="_blank"><i data-feather="github"></i>
-                        GitHub</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck.github.io" target="_blank" rel="noopener"><i data-feather="github"></i> Sitio</a>
+                    <a href="https://github.com/OsintDeck/OsintDeck" target="_blank" rel="noopener"><i data-feather="package"></i> Plugin</a>
                 </div>
             </nav>
         </div>
@@ -262,7 +263,7 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <p>&copy; 2025 OSINT Deck. Licencia MIT.</p>
+                <p>&copy; 2026 OSINT Deck. Documentación en <a href="https://osintdeck.github.io">osintdeck.github.io</a>. GPL-3.0.</p>
                 <div class="footer-links">
                     <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
                     <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
@@ -274,6 +275,9 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="assets/js/gsap-init.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/discussions.js"></script>
 </body>
