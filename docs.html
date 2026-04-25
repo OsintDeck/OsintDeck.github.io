@@ -30,7 +30,7 @@
 <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
 <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
 <a href="https://github.com/OsintDeck/OsintDeck.github.io" rel="noopener" target="_blank"><i data-feather="github"></i> Sitio</a>
-<a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank"><i data-feather="package"></i> Plugin</a>
+<a href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener" target="_blank" data-od-download-fx="brand"><i data-feather="package"></i> Plugin</a>
 </div>
 </nav>
 </div>
@@ -145,6 +145,7 @@
                                                 lectura ordenado</p>
 <div class="docs-meta">
 <span class="version-badge">Docs ~v1.0.0</span>
+<a class="github-link" href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener noreferrer" target="_blank" data-od-download-fx="brand"><i data-feather="download"></i> Descargar ZIP (Releases)</a>
 <a class="github-link" href="https://github.com/OsintDeck/OsintDeck" rel="noopener noreferrer" target="_blank">
 <i data-feather="github"></i> Ver en GitHub
                                                 </a>
@@ -333,7 +334,8 @@
 <div class="callout tip">
 <i data-feather="zap"></i>
 <div>
-<strong>Tip:</strong> Descargá siempre el ZIP desde las <strong>Releases</strong> de
+<strong>Tip:</strong> Descargá siempre el ZIP desde las
+                                <strong><a href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener" target="_blank" data-od-download-fx="brand">Releases</a></strong> de
                                 GitHub (incluye la carpeta <code>vendor/</code> lista para usar). Así no necesitás
                                 Composer en el servidor.
                             </div>
@@ -371,8 +373,9 @@
 <p>Estos pasos son para quien ya tiene WordPress y sólo quiere añadir el plugin.</p>
 <h3>1. Conseguir el archivo ZIP del plugin</h3>
 <ul style="list-style: disc; margin-left: 1.25rem;">
-<li>Entrá al repositorio del proyecto en GitHub: <a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank">OsintDeck/OsintDeck</a>.</li>
-<li>Abrí <strong>Releases</strong> y descargá el último ZIP publicado (nombre similar a
+<li>Entrá a la sección <strong><a href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener" target="_blank" data-od-download-fx="brand">Releases</a></strong> del repositorio
+                                <strong>OsintDeck/OsintDeck</strong> en GitHub (acceso directo a las descargas).</li>
+<li>Descargá el último ZIP publicado (nombre similar a
                                 <code>osint-deck-vX.Y.Z.zip</code>). Ese paquete está pensado para instalarse en
                                 WordPress e incluye las dependencias PHP (<code>vendor/</code>).</li>
 <li><strong>No descomprimas</strong> el ZIP en tu PC para subir carpeta por carpeta:
@@ -391,7 +394,7 @@
     </div>
     <figcaption class="docs-figure__caption">
         <strong>Repositorio oficial:</strong> Sección de <strong>Releases</strong> en 
-        <a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank">OsintDeck/OsintDeck</a>. 
+        <a href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener" target="_blank" data-od-download-fx="brand">OsintDeck/OsintDeck</a>. 
         Para una instalación estable, se debe descargar el archivo <code>osint-deck-vX.Y.Z.zip</code> (Asset), 
         el cual contiene el núcleo del plugin y las dependencias de Composer ya procesadas.
     </figcaption>
@@ -474,8 +477,9 @@
 <i data-feather="alert-triangle"></i>
 <div>
 <strong>Si al activar aparece un error de “autoload” o “vendor”:</strong> el ZIP no era
-                                el de release completo o se subió una carpeta sin dependencias. Volvé a descargar el ZIP
-                                de <strong>Releases</strong> o usá un paquete construido con
+                                el de release completo o se subió una carpeta sin dependencias. Volvé a
+                                <a href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener" target="_blank" data-od-download-fx="brand">descargar el ZIP desde Releases</a>
+                                o usá un paquete construido con
                                 <code>composer install --no-dev</code>.
                             </div>
 </div>
@@ -490,7 +494,7 @@
 
 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(226, 232, 240, 0.95);"><strong>En la
                                 práctica:</strong> descargá el <strong>ZIP de una release</strong> del repo
-                            <a href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener" target="_blank">OsintDeck/OsintDeck</a>
+                            <a href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener" target="_blank" data-od-download-fx="brand">OsintDeck/OsintDeck</a>
                             (debe incluir la carpeta <code>vendor/</code>). En wp-admin andá a
                             <strong>Plugins → Añadir nuevo → Subir plugin</strong>, elegí el ZIP, instalá y
                             <strong>Activá</strong>. Para una guía con más detalle y capturas, usá
@@ -565,7 +569,8 @@
                             podés).</p>
 <h3>Instalación manual (carpeta + Composer)</h3>
 <ol>
-<li>Clonar o descargar desde <a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank">OsintDeck/OsintDeck</a>.</li>
+<li><strong>Clonar:</strong> desde <a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank">OsintDeck/OsintDeck</a>.
+                                <strong>ZIP listo para WordPress:</strong> <a href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener" target="_blank" data-od-download-fx="brand">Releases</a>.</li>
 <li><code>composer install</code> dentro de la carpeta del plugin.</li>
 <li>Copiar a <code>wp-content/plugins/osint-deck</code>.</li>
 <li><strong>Plugins → OSINT Deck → Activar</strong> (se aplican migraciones de base de
@@ -1436,7 +1441,8 @@ manual de principio a fin.</p>
 <a href="https://osint.com.ar" target="_blank"><i data-feather="rss"></i> Blog</a>
 <a href="discussions.html"><i data-feather="message-circle"></i> Discusiones</a>
 <a href="issues.html"><i data-feather="alert-circle"></i> Reportar Bug</a>
-<a href="https://github.com/OsintDeck/OsintDeck"><i data-feather="github"></i> GitHub</a>
+<a href="https://github.com/OsintDeck/OsintDeck/releases" rel="noopener" target="_blank" data-od-download-fx="brand"><i data-feather="download"></i> Descargar ZIP</a>
+<a href="https://github.com/OsintDeck/OsintDeck" rel="noopener" target="_blank"><i data-feather="github"></i> Código</a>
 <a href="#"><i data-feather="arrow-up"></i> Arriba</a>
 </div>
 </div>

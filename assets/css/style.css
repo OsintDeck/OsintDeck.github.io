@@ -1260,6 +1260,7 @@ html.od-gsap-reveal .docs-page #docs-panel .docs-section.is-active {
     display: flex;
     gap: 15px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .version-badge {
@@ -2067,4 +2068,251 @@ a.acknowledgment-name:hover {
 .linkedin-icon svg {
     width: 16px;
     height: 16px;
+}
+
+/* Efecto “fantasía” al descargar plugin (hero) */
+.od-download-fx-root {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.od-download-fx-burst {
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(
+        circle at var(--od-fx-x, 50%) var(--od-fx-y, 42%),
+        rgba(6, 234, 206, 0.42) 0%,
+        rgba(105, 34, 231, 0.22) 28%,
+        transparent 58%
+    );
+    opacity: 0;
+    transform: scale(0.6);
+    filter: blur(0);
+}
+
+.od-download-fx-ring {
+    position: fixed;
+    left: var(--od-fx-x, 50%);
+    top: var(--od-fx-y, 42%);
+    width: 48px;
+    height: 48px;
+    margin-left: -24px;
+    margin-top: -24px;
+    border-radius: 50%;
+    border: 2px solid rgba(196, 223, 255, 0.85);
+    box-shadow:
+        0 0 24px rgba(0, 177, 255, 0.55),
+        0 0 48px rgba(6, 234, 206, 0.35);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.od-download-fx-particle {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: var(--od-p-size, 7px);
+    height: var(--od-p-size, 7px);
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 10px rgba(0, 177, 255, 0.7);
+    will-change: transform, opacity;
+}
+
+.od-download-fx-spark {
+    position: fixed;
+    left: 0;
+    top: 0;
+    font-size: 14px;
+    line-height: 1;
+    pointer-events: none;
+    opacity: 0.95;
+    filter: drop-shadow(0 0 6px rgba(6, 234, 206, 0.9));
+    will-change: transform, opacity;
+}
+
+.od-download-fx-nebula-blob {
+    position: fixed;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    filter: blur(24px);
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.od-download-fx-prism-sweep {
+    position: absolute;
+    width: 280vmin;
+    height: 280vmin;
+    background: conic-gradient(
+        from 0deg,
+        rgba(6, 234, 206, 0.55),
+        rgba(105, 34, 231, 0.45),
+        rgba(0, 115, 255, 0.5),
+        rgba(6, 234, 206, 0.55)
+    );
+    mix-blend-mode: screen;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.od-download-fx-warp-streak {
+    position: fixed;
+    width: 4px;
+    height: 32px;
+    margin-left: -2px;
+    margin-top: -16px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, rgba(6, 234, 206, 0.05), rgba(6, 234, 206, 0.95), rgba(0, 177, 255, 0.4));
+    box-shadow: 0 0 12px rgba(0, 177, 255, 0.65);
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+/* Pantalla de marca: cortina → texto → logo zoom in */
+.od-download-fx-root--brand {
+    background: transparent;
+}
+
+.od-download-brand-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.od-download-brand-screen__curtain {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: radial-gradient(
+        ellipse 90% 75% at 50% 40%,
+        rgba(6, 20, 72, 0.55) 0%,
+        rgba(1, 7, 39, 0.97) 52%,
+        #000 100%
+    );
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    pointer-events: none;
+    will-change: opacity;
+}
+
+.od-download-brand-screen__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1.25rem, 4vw, 2rem);
+    text-align: center;
+    padding: min(6vh, 3rem) 1.5rem;
+    max-width: min(96vw, 720px);
+    opacity: 0;
+    will-change: opacity, transform;
+}
+
+.od-download-brand-screen__label {
+    font-family: var(--font-main);
+    font-size: clamp(1.05rem, 2.8vw, 1.4rem);
+    font-weight: 600;
+    color: var(--brand-celeste);
+    letter-spacing: 0.06em;
+    margin: 0;
+    line-height: 1.35;
+    text-shadow:
+        0 0 28px rgba(0, 177, 255, 0.45),
+        0 0 2px rgba(1, 7, 39, 0.8);
+    will-change: transform, opacity, filter;
+}
+
+.od-download-brand-screen__logo-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.od-download-brand-screen__glow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(110vw, 640px);
+    height: min(48vw, 240px);
+    background: radial-gradient(
+        ellipse at center,
+        rgba(6, 234, 206, 0.4) 0%,
+        rgba(0, 115, 255, 0.2) 38%,
+        transparent 68%
+    );
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    will-change: transform, opacity;
+}
+
+.od-download-brand-screen__logo {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: min(92vw, 560px);
+    height: auto;
+    transform-origin: center center;
+    filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.45));
+    will-change: transform, opacity;
+}
+
+/* Modal si el navegador bloquea window.open tras el efecto */
+.od-download-fallback {
+    position: fixed;
+    inset: 0;
+    z-index: 10100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(1, 7, 39, 0.78);
+    backdrop-filter: blur(8px);
+}
+
+.od-download-fallback__card {
+    max-width: 420px;
+    width: 100%;
+    padding: 1.5rem 1.75rem;
+    border-radius: 12px;
+    background: linear-gradient(165deg, var(--brand-azul-profundidad) 0%, #06124a 100%);
+    border: 1px solid rgba(196, 223, 255, 0.35);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.od-download-fallback__title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.od-download-fallback__text {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--brand-muted);
+    line-height: 1.5;
+}
+
+.od-download-fallback__cta {
+    text-align: center;
+    margin-top: 0.25rem;
+}
+
+.od-download-fallback__close {
+    align-self: center;
+    margin-top: 0.25rem;
 }
