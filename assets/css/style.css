@@ -588,6 +588,175 @@ body.docs-page {
     --docs-col-height: calc(100vh - var(--docs-layout-pad-top));
 }
 
+/* Entrada cinematográfica (solo docs.html cuando html tiene .od-docs-entry-pending al cargar) */
+/* Anti-FOUC: mismas reglas críticas en docs.html <style id="od-docs-entry-fouc"> al inicio del head */
+html.od-docs-entry-pending body.docs-page {
+    background: #01030d !important;
+}
+
+html.od-docs-entry-pending body.docs-page::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    background: #01030d;
+    pointer-events: none;
+}
+
+html.od-docs-entry-pending body.docs-page > .container,
+html.od-docs-entry-pending body.docs-page > footer,
+html.od-docs-entry-pending body.docs-page #back-to-top {
+    visibility: hidden !important;
+}
+
+html.od-docs-entry-pending body.docs-page header {
+    visibility: hidden !important;
+}
+
+body.docs-page--entry-running {
+    overflow: hidden;
+}
+
+.docs-entry-root {
+    position: fixed;
+    inset: 0;
+    z-index: 10060;
+    pointer-events: none;
+}
+
+.docs-entry-curtain {
+    position: absolute;
+    inset: 0;
+    /* Capa base 100 % opaca: evita que se “transluzca” el docs detrás */
+    background-color: #01030d;
+    background-image: radial-gradient(
+        ellipse 92% 78% at 50% 34%,
+        #0a1740 0%,
+        #030818 42%,
+        #000000 100%
+    );
+    opacity: 0;
+    -webkit-backdrop-filter: blur(20px) saturate(1.05);
+    backdrop-filter: blur(20px) saturate(1.05);
+    will-change: opacity;
+}
+
+.docs-entry-vignette {
+    position: absolute;
+    inset: -5%;
+    /* Sin screen: no aclara el fondo ni deja ver el contenido de atrás */
+    background: radial-gradient(
+        ellipse 58% 52% at 50% 36%,
+        rgba(6, 234, 206, 0.06) 0%,
+        transparent 62%
+    );
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: normal;
+}
+
+.docs-entry-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background-image:
+        linear-gradient(rgba(196, 223, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196, 223, 255, 0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+    /* Máscara más suave pero el trazo sigue sobre cortina opaca */
+    mask-image: radial-gradient(ellipse 78% 68% at 50% 42%, black 35%, transparent 88%);
+    pointer-events: none;
+}
+
+.docs-entry-ui {
+    position: absolute;
+    left: 50%;
+    top: max(76px, 14vh);
+    transform: translateX(-50%);
+    text-align: center;
+    max-width: min(92vw, 520px);
+    padding: 0 1.25rem 1rem;
+    z-index: 3;
+}
+
+.docs-entry-kicker {
+    font-family: var(--font-main);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(196, 223, 255, 0.55);
+    margin: 0 0 0.85rem;
+}
+
+.docs-entry-title {
+    font-family: var(--font-main);
+    font-size: clamp(1.35rem, 4.2vw, 1.85rem);
+    font-weight: 700;
+    color: var(--brand-celeste);
+    margin: 0 0 1.35rem;
+    line-height: 1.25;
+    text-shadow:
+        0 0 40px rgba(0, 177, 255, 0.35),
+        0 0 2px rgba(1, 7, 39, 0.9);
+}
+
+.docs-entry-bar-wrap {
+    max-width: 300px;
+    margin: 0 auto 1.1rem;
+    transform-origin: center center;
+}
+
+.docs-entry-bar {
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 177, 255, 0.12);
+}
+
+.docs-entry-bar-shine {
+    position: absolute;
+    left: -60%;
+    top: 0;
+    width: 55%;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 177, 255, 0.85),
+        rgba(6, 234, 206, 0.65),
+        transparent
+    );
+    will-change: transform;
+}
+
+.docs-entry-hint {
+    font-family: var(--font-main);
+    font-size: 0.88rem;
+    color: var(--brand-muted);
+    margin: 0;
+    line-height: 1.5;
+    max-width: 36rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.docs-entry-fly {
+    pointer-events: none;
+    display: block;
+    filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.55));
+}
+
+/* Clon del logo: del header al hero del manual (docs-entry.js) */
+.docs-hero-logo-clone {
+    pointer-events: none;
+    display: block;
+    filter: drop-shadow(0 14px 36px rgba(0, 0, 0, 0.5));
+}
+
 /* Ancho completo del viewport: sin caja 1200px centrada; sidebar al borde izquierdo */
 body.docs-page > .container {
     max-width: none;

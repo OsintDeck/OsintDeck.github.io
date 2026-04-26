@@ -4,6 +4,36 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script>
+(function () {
+    try {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        document.documentElement.classList.add('od-docs-entry-pending');
+    } catch (e) { /* ignore */ }
+})();
+</script>
+<!-- Crítico: evita ver la documentación antes del overlay (sin esperar CSS externos) -->
+<style id="od-docs-entry-fouc">
+html.od-docs-entry-pending body.docs-page {
+    background: #01030d !important;
+}
+html.od-docs-entry-pending body.docs-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    background: #01030d;
+    pointer-events: none;
+}
+html.od-docs-entry-pending body.docs-page > .container,
+html.od-docs-entry-pending body.docs-page > footer,
+html.od-docs-entry-pending body.docs-page #back-to-top {
+    visibility: hidden !important;
+}
+html.od-docs-entry-pending body.docs-page header {
+    visibility: hidden !important;
+}
+</style>
 <title>Documentación - OSINT Deck</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -12,9 +42,12 @@
 <link href="assets/css/acknowledgments.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet"/>
-<script src="https://unpkg.com/feather-icons"></script>
-<link href="assets/img/osintdeck-logo-light.png" rel="icon" type="image/png"/>
+<link rel="icon" type="image/webp" sizes="32x32" href="https://osint.com.ar/wp-content/uploads/2025/12/cropped-mascota-favicon-32x32.webp"/>
+<link rel="icon" type="image/webp" sizes="192x192" href="https://osint.com.ar/wp-content/uploads/2025/12/cropped-mascota-favicon-192x192.webp"/>
+<link rel="apple-touch-icon" sizes="180x180" href="https://osint.com.ar/wp-content/uploads/2025/12/cropped-mascota-favicon-180x180.webp"/>
+<meta name="msapplication-TileImage" content="https://osint.com.ar/wp-content/uploads/2025/12/cropped-mascota-favicon-270x270.webp"/>
 <meta content="Manual OSINT Deck: flujo de puesta en marcha (ZIP, WordPress), integraciones Google y Cloudflare Turnstile, reportes, arquitectura src/, motor de decisiones, Naive Bayes, referencia AJAX y cron." name="description"/>
+<script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body class="docs-page">
 <header>
@@ -1457,6 +1490,7 @@ manual de principio a fin.</p>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script src="assets/js/docs-panel.js"></script>
 <script src="assets/js/sidebar-doc-nav.js"></script>
+<script src="assets/js/docs-entry.js"></script>
 <script src="assets/js/gsap-init.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/sidebar-tree.js"></script>

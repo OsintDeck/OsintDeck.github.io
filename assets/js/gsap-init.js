@@ -33,6 +33,7 @@
 
         const hasGSAP = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
         if (!hasGSAP) {
+            document.documentElement.classList.remove('od-docs-entry-pending');
             return;
         }
 
@@ -43,31 +44,41 @@
             ease: 'power2.out',
         };
 
-        /* —— Barra superior (fromTo: estado final explícito, íconos ya SVG) —— */
-        gsap.fromTo(
-            'header',
-            { y: -14, autoAlpha: 0 },
-            { y: 0, autoAlpha: 1, duration: 0.52, ease: 'power3.out' }
-        );
+        const docsEntryPending =
+            document.body.classList.contains('docs-page') &&
+            document.documentElement.classList.contains('od-docs-entry-pending');
 
-        gsap.fromTo(
-            'header .logo img',
-            { scale: 0.94, autoAlpha: 0 },
-            { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'power2.out', delay: 0.06 }
-        );
+        /* —— Barra superior: en docs con entrada cinematográfica el logo llega después (docs-entry.js) —— */
+        if (docsEntryPending) {
+            gsap.set('header', { y: 0, autoAlpha: 1 });
+            gsap.set('header .logo img', { scale: 1, autoAlpha: 0 });
+            gsap.set('header .nav-links a', { y: -8, autoAlpha: 0 });
+        } else {
+            gsap.fromTo(
+                'header',
+                { y: -14, autoAlpha: 0 },
+                { y: 0, autoAlpha: 1, duration: 0.52, ease: 'power3.out' }
+            );
 
-        gsap.fromTo(
-            'header .nav-links a',
-            { y: -8, autoAlpha: 0 },
-            {
-                y: 0,
-                autoAlpha: 1,
-                stagger: 0.038,
-                duration: 0.42,
-                ease: 'power2.out',
-                delay: 0.1,
-            }
-        );
+            gsap.fromTo(
+                'header .logo img',
+                { scale: 0.94, autoAlpha: 0 },
+                { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'power2.out', delay: 0.06 }
+            );
+
+            gsap.fromTo(
+                'header .nav-links a',
+                { y: -8, autoAlpha: 0 },
+                {
+                    y: 0,
+                    autoAlpha: 1,
+                    stagger: 0.038,
+                    duration: 0.42,
+                    ease: 'power2.out',
+                    delay: 0.1,
+                }
+            );
+        }
 
         /* —— Inicio / hero —— */
         const hero = document.querySelector('.hero');
@@ -173,21 +184,30 @@
         const docsLogoImg = document.querySelector('.docs-hero-logo img');
         const docsHeaderEls = document.querySelectorAll('.docs-header > *');
         if (docsHeroInner && (docsLogoImg || docsHeaderEls.length)) {
-            const dtl = gsap.timeline({ defaults: { ease: 'power2.out' } });
-            if (docsLogoImg) {
-                dtl.fromTo(
-                    docsLogoImg,
-                    { autoAlpha: 0, scale: 0.92, y: 14 },
-                    { autoAlpha: 1, scale: 1, y: 0, duration: 0.54 }
-                );
-            }
-            if (docsHeaderEls.length) {
-                dtl.fromTo(
-                    docsHeaderEls,
-                    { autoAlpha: 0, y: 18 },
-                    { autoAlpha: 1, y: 0, duration: 0.46, stagger: 0.1 },
-                    docsLogoImg ? '-=0.22' : 0
-                );
+            if (!docsEntryPending) {
+                const dtl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+                if (docsLogoImg) {
+                    dtl.fromTo(
+                        docsLogoImg,
+                        { autoAlpha: 0, scale: 0.92, y: 14 },
+                        { autoAlpha: 1, scale: 1, y: 0, duration: 0.54 }
+                    );
+                }
+                if (docsHeaderEls.length) {
+                    dtl.fromTo(
+                        docsHeaderEls,
+                        { autoAlpha: 0, y: 18 },
+                        { autoAlpha: 1, y: 0, duration: 0.46, stagger: 0.1 },
+                        docsLogoImg ? '-=0.22' : 0
+                    );
+                }
+            } else {
+                if (docsLogoImg) {
+                    gsap.set(docsLogoImg, { autoAlpha: 0 });
+                }
+                if (docsHeaderEls.length) {
+                    gsap.set(docsHeaderEls, { autoAlpha: 0, y: 18 });
+                }
             }
         }
 
