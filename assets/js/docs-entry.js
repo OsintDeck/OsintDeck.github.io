@@ -51,6 +51,7 @@
         document.body.appendChild(clone);
 
         const hr = headerLogo.getBoundingClientRect();
+
         gsap.set(clone, {
             position: 'fixed',
             left: hr.left + hr.width / 2,
@@ -75,30 +76,36 @@
             },
         });
 
-        /* Sacudida amortiguada: golpe inicial + oscilaciones que van perdiendo fuerza (más “física” que yoyo mecánico) */
-        tl.to(headerLogo, {
-            force3D: true,
-            keyframes: [
-                { x: -12, y: 5, rotation: -2.5, duration: 0.058, ease: 'power3.out' },
-                { x: 14, y: -4, rotation: 3, duration: 0.068, ease: 'power2.inOut' },
-                { x: -9, y: 3, rotation: -2, duration: 0.056, ease: 'power2.inOut' },
-                { x: 7, y: -2.5, rotation: 1.5, duration: 0.052, ease: 'power2.inOut' },
-                { x: -5, y: 1.5, rotation: -0.95, duration: 0.048, ease: 'power2.inOut' },
-                { x: 3.5, y: -1, rotation: 0.65, duration: 0.045, ease: 'power2.inOut' },
-                { x: -2, y: 0.6, rotation: -0.38, duration: 0.042, ease: 'power2.out' },
-                { x: 1, y: -0.35, rotation: 0.18, duration: 0.038, ease: 'power2.inOut' },
-                { x: 0, y: 0, rotation: 0, duration: 0.15, ease: 'power3.out' },
-            ],
-        })
-            .set(headerLogo, { clearProps: 'x,y,rotation' })
-            .set(clone, { autoAlpha: 1 }, '-=0.2')
+        /* Latido (doble pulso) y luego separación: clon en el mismo sitio; el header hace un micro-ajuste */
+        const beatOrigin = { transformOrigin: '50% 50%' };
+        tl.add('beat', 0)
+            .to(headerLogo, { scale: 1.1, duration: 0.09, ease: 'power2.out', ...beatOrigin }, 'beat')
+            .to(headerLogo, { scale: 1, duration: 0.13, ease: 'power2.in', ...beatOrigin }, 'beat+=0.09')
+            .to(headerLogo, { scale: 1.13, duration: 0.11, ease: 'power2.out', ...beatOrigin }, 'beat+=0.3')
+            .to(headerLogo, { scale: 1, duration: 0.24, ease: 'power3.out', ...beatOrigin }, 'beat+=0.41')
+            .add('dup', 'beat+=0.68')
+            .fromTo(
+                headerLogo,
+                { scale: 1 },
+                { scale: 0.97, duration: 0.11, ease: 'power2.in', ...beatOrigin },
+                'dup'
+            )
+            .to(headerLogo, { scale: 1, duration: 0.36, ease: 'power3.out', ...beatOrigin }, 'dup+=0.1')
             .fromTo(
                 clone,
-                { scale: 0.86 },
-                { scale: 1.06, duration: 0.22, ease: 'back.out(1.45)' },
-                '<'
+                { autoAlpha: 0, scale: 0.88 },
+                {
+                    autoAlpha: 1,
+                    scale: 1,
+                    duration: 0.4,
+                    ease: 'power3.out',
+                },
+                'dup+=0.06'
             )
-            .add('dash', '+=0.14')
+            .call(() => {
+                gsap.set(headerLogo, { clearProps: 'transform' });
+            }, null, 'dup+=0.52')
+            .add('dash', 'dup+=0.58')
             .call(() => {
                 const cr = clone.getBoundingClientRect();
                 const tr = heroLogo.getBoundingClientRect();
@@ -204,10 +211,6 @@
         const ui = document.createElement('div');
         ui.className = 'docs-entry-ui';
 
-        const kicker = document.createElement('p');
-        kicker.className = 'docs-entry-kicker';
-        kicker.textContent = 'OSINT DECK';
-
         const title = document.createElement('h2');
         title.className = 'docs-entry-title';
         title.textContent = 'Cargando documentación';
@@ -225,7 +228,7 @@
         hint.className = 'docs-entry-hint';
         hint.textContent = 'Preparando el manual interactivo…';
 
-        ui.append(kicker, title, barWrap, hint);
+        ui.append(title, barWrap, hint);
 
         const fly = document.createElement('img');
         fly.className = 'docs-entry-fly';
@@ -263,19 +266,13 @@
             .fromTo(grid, { opacity: 0 }, { opacity: 0.22, duration: 0.9 }, 0.12)
             .fromTo(ui, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.58, ease: 'power3.out' }, 0.22)
             .fromTo(
-                kicker,
-                { opacity: 0, letterSpacing: '0.42em' },
-                { opacity: 1, letterSpacing: '0.22em', duration: 0.75, ease: 'power2.out' },
-                0.32
-            )
-            .fromTo(
                 title,
                 { opacity: 0, y: 18, filter: 'blur(12px)' },
                 { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.72, ease: 'power3.out' },
-                0.42
+                0.32
             )
-            .fromTo(barWrap, { opacity: 0, scaleX: 0.88 }, { opacity: 1, scaleX: 1, duration: 0.52, ease: 'power2.out' }, 0.52)
-            .fromTo(hint, { opacity: 0, y: 8 }, { opacity: 0.82, y: 0, duration: 0.5 }, 0.58)
+            .fromTo(barWrap, { opacity: 0, scaleX: 0.88 }, { opacity: 1, scaleX: 1, duration: 0.52, ease: 'power2.out' }, 0.48)
+            .fromTo(hint, { opacity: 0, y: 8 }, { opacity: 0.82, y: 0, duration: 0.5 }, 0.54)
             .to(barShine, { xPercent: 220, duration: 1.35, ease: 'none', repeat: 1 }, 0.55)
             .fromTo(
                 fly,
@@ -302,7 +299,7 @@
                 },
                 'merge'
             )
-            .to([kicker, title, barWrap, hint], { autoAlpha: 0, duration: 0.38, ease: 'power2.in' }, 'merge+=0.18')
+            .to([title, barWrap, hint], { autoAlpha: 0, duration: 0.38, ease: 'power2.in' }, 'merge+=0.18')
             .to(grid, { autoAlpha: 0, duration: 0.35, ease: 'power2.in' }, 'merge+=0.28')
             .to(vignette, { autoAlpha: 0, duration: 0.45, ease: 'power2.in' }, 'merge+=0.32')
             .to(curtain, { autoAlpha: 0, duration: 0.55, ease: 'power2.inOut' }, 'merge+=0.42')

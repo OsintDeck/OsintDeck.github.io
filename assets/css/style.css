@@ -679,16 +679,6 @@ body.docs-page--entry-running {
     z-index: 3;
 }
 
-.docs-entry-kicker {
-    font-family: var(--font-main);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(196, 223, 255, 0.55);
-    margin: 0 0 0.85rem;
-}
-
 .docs-entry-title {
     font-family: var(--font-main);
     font-size: clamp(1.35rem, 4.2vw, 1.85rem);
